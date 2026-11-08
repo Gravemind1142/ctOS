@@ -27,7 +27,7 @@ Singleton {
     ConfigManager {
         id: stateManager
         path: Paths.statePath("greeter.state")
-        writeEnabled: root.isGreetd
+        writeEnabled: root.isGreetd || root.isKiosk
 
         adapter: JsonAdapter {
             id: stateAdapter
@@ -60,7 +60,7 @@ Singleton {
     readonly property bool isLockd: mode === modes.lockd
     readonly property bool isKiosk: mode === modes.kiosk
 
-    readonly property string monitor: general.modes[modeKey].monitor || general.monitor || Quickshell.screens[0].name
+    readonly property string monitor: general.modes[modeKey]?.monitor || general.monitor || Quickshell.screens[0].name
     readonly property string fontFamily: general.fontFamily
 
     enum AnimationMode {
@@ -70,7 +70,7 @@ Singleton {
     }
 
     readonly property int animationMode: {
-        const value = (general.modes[modeKey].animations || general.animations || "").toLowerCase();
+        const value = (general.modes[modeKey]?.animations || general.animations || "").toLowerCase();
 
         switch (value) {
         case "none":

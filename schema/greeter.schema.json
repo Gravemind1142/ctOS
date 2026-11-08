@@ -75,6 +75,13 @@
           "properties": {
             "animations": { "$ref": "#/$defs/animationProfile" }
           }
+        },
+        "kiosk": {
+          "title": "Kiosk Mode Settings",
+          "type": "object",
+          "properties": {
+            "animations": { "$ref": "#/$defs/animationProfile" }
+          }
         }
       },
       "required": ["greetd"]

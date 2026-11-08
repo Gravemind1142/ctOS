@@ -87,6 +87,10 @@ generate_greeter_config() {
       "test": {
         "animations": "all",
         "monitor": ""
+      },
+      "kiosk": {
+        "animations": "all",
+        "monitor": ""
       }
     }
   }

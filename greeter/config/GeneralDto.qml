@@ -29,5 +29,6 @@ JsonObject {
             animations: "reduced"
         }
         property ModeSettings test: ModeSettings {}
+        property ModeSettings kiosk: ModeSettings {}
     }
 }
