@@ -32,7 +32,7 @@ Item {
                 text: root.text
                 color: Theme.textPrimary
                 font.pixelSize: 16
-                font.family: Theme.fontFamily
+                font.family: Theme.fontInsider
                 font.weight: 500
                 Layout.alignment: Qt.AlignVCenter
             }

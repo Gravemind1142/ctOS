@@ -12,7 +12,7 @@ Item {
 
     readonly property font textFont: Qt.font({
         pixelSize: 16,
-        family: Theme.fontFamily,
+        family: Theme.fontInsider,
         weight: 500
     })
 

@@ -47,7 +47,7 @@ RowLayout {
                             id: typewriter
                             color: Theme.textPrimary
                             initialText: ""
-                            font.family: Theme.fontFamily
+                            font.family: Theme.fontInsider
                             font.pixelSize: 14
                         }
 

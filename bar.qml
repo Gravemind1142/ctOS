@@ -21,7 +21,7 @@ PanelWindow {
 
     Binding {
         target: Theme
-        property: "fontFamily"
+        property: "fontInsider"
         value: Settings.fontFamily
     }
 
@@ -257,7 +257,7 @@ PanelWindow {
                     text: "▨"
                     color: Theme.textPrimary
                     font.pixelSize: 18
-                    font.family: Theme.fontFamily
+                    font.family: Theme.fontInsider
                     font.weight: 600
                     Layout.alignment: Qt.AlignVCenter
                 }

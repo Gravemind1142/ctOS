@@ -1,0 +1,41 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ctOS design tokens",
+    "description": "Top-level keys are sections. Each section maps a globally unique camelCase token name to a value, a {reference} to another token, or an object with metadata.",
+    "type": "object",
+    "properties": {
+        "$schema": { "type": "string" }
+    },
+    "additionalProperties": {
+        "type": "object",
+        "propertyNames": { "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "additionalProperties": {
+            "oneOf": [
+                { "$ref": "#/$defs/value" },
+                {
+                    "type": "object",
+                    "required": ["value"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "value": { "$ref": "#/$defs/value" },
+                        "type": {
+                            "enum": ["color", "int", "real", "string", "bool"],
+                            "description": "Override the inferred QML type"
+                        },
+                        "mutable": {
+                            "type": "boolean",
+                            "description": "Emit a writable property instead of readonly"
+                        },
+                        "description": { "type": "string" }
+                    }
+                }
+            ]
+        }
+    },
+    "$defs": {
+        "value": {
+            "description": "Colors are #RGB, #RRGGBB or #RRGGBBAA (CSS order). '{name}' references another token.",
+            "type": ["string", "number", "boolean"]
+        }
+    }
+}

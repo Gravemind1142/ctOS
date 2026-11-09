@@ -38,7 +38,7 @@ Item {
                     color: "white"
                     font.pixelSize: 12
                     font.weight: 600
-                    font.family: Theme.fontFamily
+                    font.family: Theme.fontInsider
                 }
 
                 Text {
@@ -47,7 +47,7 @@ Item {
                     color: "white"
                     font.pixelSize: 12
                     font.weight: 600
-                    font.family: Theme.fontFamily
+                    font.family: Theme.fontInsider
                 }
 
                 Item {
@@ -60,7 +60,7 @@ Item {
                     color: "white"
                     font.pixelSize: 12
                     font.weight: 600
-                    font.family: Theme.fontFamily
+                    font.family: Theme.fontInsider
                 }
             }
 

@@ -2,6 +2,24 @@
 
 What's still needed before ctOS counts as a full rice. Anything themed should use the palette in [`common/Theme.qml`](common/Theme.qml) so it all matches.
 
+## Design system
+
+See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated before new work.
+
+- [ ] **Migrate literals to tokens**: replace the ~86 hardcoded colours, sizes and durations in QML with `Theme.<token>`. Includes moving the greeter from `Settings.fontFamily` to `Theme.fontInsider`/`fontPublic` and removing the duplicate font defaults in the bar and greeter `GeneralDto`. Needs the spacing, motion and shape scales below
+- [ ] **Spacing & layout**: choose screen-height scaling (`Units.vh`) or fixed pixels × display scale; define the spacing scale, stroke widths and bar/panel dimensions
+- [ ] **Motion**: duration and easing tokens; which signature transitions to keep (typewriter, accent slide-in, ctOS → DedSec erosion); tie into the greeter's animation-mode setting
+- [ ] **Shape**: where corner brackets are used and whether rounding is always zero
+- [ ] **Iconography**: icon style (8-bit / early cell phone) and an icon theme that matches, for GTK too
+- [ ] **Remaining principles**: motion restraint, accent use, information density
+- [ ] **Colour**: check success green and error red against the source; define the full role list and hover/active/disabled states
+- [ ] **Type scale**: sizes, weights and letter-spacing for both voices
+- [ ] **Components**: inventory of `common/`, `bar/` and `greeter/` components, with when to use each
+- [ ] **First template target**: kitty, to prove the `design/templates` pipeline end to end
+- [ ] **Nimbus Sans dependency**: add the URW base-35 fonts to the install script / README dependencies
+- [ ] **Nautilus**: insider or public?
+- [ ] **References**: collect screenshots in `design/references/`; read the NYCTA Graphics Standards Manual and the Legion UI artists' portfolios
+
 ## Core look
 
 - [ ] **Window decorations (Hyprland)**: borders are still the default cyan/green gradient, with default rounding, gaps and animations. Set ctOS colours, sharp or minimal corners, and custom animation curves
