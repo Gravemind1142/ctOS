@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Services.Pipewire
 
 import qs.common
+import qs.bar.config
 
 Item {
     id: root
@@ -48,7 +49,7 @@ Item {
                 font: root.textFont
             }
             Text {
-                text: "AEDT-1234-"
+                text: `${Settings.modules.status.timezone || Qt.formatDateTime(systemClock.date, "t")}-1234-`
                 color: Theme.textSecondary
                 font: root.textFont
             }

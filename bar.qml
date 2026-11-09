@@ -7,13 +7,22 @@ import QtQuick.Layouts
 import qs.common
 import qs.common.components
 import qs.bar.components
+import qs.bar.config
 
 // qmllint disable
 PanelWindow {
     id: root
 
+    screen: Settings.screen
+
     color: Theme.background
     focusable: true
+
+    Binding {
+        target: Theme
+        property: "fontFamily"
+        value: Settings.fontFamily
+    }
 
     implicitHeight: 37
 
@@ -47,7 +56,10 @@ PanelWindow {
 
             Divider {}
 
-            Workspaces {}
+            Workspaces {
+                visible: Settings.modules.workspaces.enabled
+                count: Settings.workspaceCount
+            }
 
             Meter {
                 id: cpuMeter
@@ -58,35 +70,45 @@ PanelWindow {
 
                 property real lastCpuTotal: 0
                 property real lastCpuIdle: 0
-                Process {
-                    id: cpuProc
-                    command: ["sh", "-c", "while true; do head -1 /proc/stat; sleep 2; done"]
-                    running: true
-                    stdout: SplitParser {
-                        onRead: data => {
-                            if (!data) {
-                                return;
-                            }
 
-                            const parts = data.trim().split(/\s+/);
+                visible: Settings.modules.cpu.enabled
 
-                            const idle = parseInt(parts[4]) + parseInt(parts[5]);
-                            const total = parts.slice(1, 8).reduce((a, b) => a + parseInt(b), 0);
-
-                            if (cpuMeter.lastCpuTotal > 0) {
-                                const cpuUsage = Math.round(100 * (1 - (idle - cpuMeter.lastCpuIdle) / (total - cpuMeter.lastCpuTotal)));
-
-                                cpuMeter.percentage = cpuUsage;
-                                cpuMeter.value = cpuUsage.toString().padStart(3, "0") + "%";
-                            }
-
-                            cpuMeter.lastCpuTotal = total;
-                            cpuMeter.lastCpuIdle = idle;
-                        }
+                function sample(line: string): void {
+                    const parts = line.trim().split(/\s+/);
+                    if (parts[0] !== "cpu") {
+                        return;
                     }
+
+                    const idle = parseInt(parts[4]) + parseInt(parts[5]);
+                    const total = parts.slice(1, 8).reduce((a, b) => a + parseInt(b), 0);
+
+                    if (cpuMeter.lastCpuTotal > 0 && total > cpuMeter.lastCpuTotal) {
+                        const cpuUsage = Math.round(100 * (1 - (idle - cpuMeter.lastCpuIdle) / (total - cpuMeter.lastCpuTotal)));
+
+                        cpuMeter.percentage = cpuUsage;
+                        cpuMeter.value = cpuUsage.toString().padStart(3, "0") + "%";
+                    }
+
+                    cpuMeter.lastCpuTotal = total;
+                    cpuMeter.lastCpuIdle = idle;
+                }
+
+                FileView {
+                    id: cpuStat
+                    path: "/proc/stat"
+                    onLoaded: cpuMeter.sample(text().split("\n")[0])
+                }
+
+                Timer {
+                    interval: Settings.pollInterval(Settings.modules.cpu.interval, 2) * 1000
+                    running: cpuMeter.visible
+                    repeat: true
+                    onTriggered: cpuStat.reload()
                 }
             }
-            Divider {}
+            Divider {
+                visible: cpuMeter.visible
+            }
             Meter {
                 id: memMeter
                 name: "MEM"
@@ -94,35 +116,39 @@ PanelWindow {
                 value: "0.0G"
                 percentage: 0
 
-                Process {
-                    id: memProc
-                    command: ["sh", "-c", "while true; do free -m | awk '/^Mem:/ {print $2, $3}'; sleep 1; done"]
-                    running: true
-                    stdout: SplitParser {
-                        onRead: data => {
-                            if (!data) {
-                                return;
-                            }
+                visible: Settings.modules.memory.enabled
 
-                            const parts = data.trim().split(/\s+/);
-                            if (parts.length < 2) {
-                                return;
-                            }
+                // same as free(1): used = total - available
+                function sample(meminfo: string): void {
+                    const total = parseInt(meminfo.match(/^MemTotal:\s+(\d+)/m)?.[1] ?? "0");
+                    const available = parseInt(meminfo.match(/^MemAvailable:\s+(\d+)/m)?.[1] ?? "0");
 
-                            const total = parseInt(parts[0]);
-                            let used = parseInt(parts[1]);
-
-                            if (total > 0) {
-                                const memUsagePercent = Math.round((used / total) * 100);
-
-                                memMeter.percentage = memUsagePercent;
-                                memMeter.value = (used / 1024).toFixed(1) + "G";
-                            }
-                        }
+                    if (total <= 0) {
+                        return;
                     }
+
+                    const used = total - available;
+
+                    memMeter.percentage = Math.round((used / total) * 100);
+                    memMeter.value = (used / 1024 / 1024).toFixed(1) + "G";
+                }
+
+                FileView {
+                    id: memInfo
+                    path: "/proc/meminfo"
+                    onLoaded: memMeter.sample(text())
+                }
+
+                Timer {
+                    interval: Settings.pollInterval(Settings.modules.memory.interval, 1) * 1000
+                    running: memMeter.visible
+                    repeat: true
+                    onTriggered: memInfo.reload()
                 }
             }
-            Divider {}
+            Divider {
+                visible: memMeter.visible
+            }
         }
 
         Item {
@@ -135,6 +161,7 @@ PanelWindow {
 
             SimpleSegment {
                 id: netSegment
+                visible: Settings.modules.network.enabled
                 Accents {
 
                     anchors.fill: parent
@@ -192,10 +219,14 @@ PanelWindow {
                 }
             }
 
-            Divider {}
+            Divider {
+                visible: netSegment.visible && (userSegment.visible || statusSegment.visible)
+            }
 
             SimpleSegment {
-                text: Quickshell.env("USER").toUpperCase()
+                id: userSegment
+                visible: Settings.modules.user.enabled
+                text: (Settings.modules.user.label || Quickshell.env("USER")).toUpperCase()
                 Text {
                     anchors.centerIn: parent
                     anchors.verticalCenterOffset: -1
@@ -209,9 +240,14 @@ PanelWindow {
                 }
             }
 
-            Divider {}
+            Divider {
+                visible: userSegment.visible && statusSegment.visible
+            }
 
-            Status {}
+            Status {
+                id: statusSegment
+                visible: Settings.modules.status.enabled
+            }
         }
     }
 }
