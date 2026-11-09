@@ -48,7 +48,7 @@ See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated b
 - [ ] **Notifications**: no daemon installed (no mako/dunst/swaync). Install and theme one, or make a Quickshell one
 - [ ] **OSD**: on-screen popups when volume or brightness keys are pressed
 - [ ] **Power menu**: lock / logout / suspend / reboot / shutdown (replaces the bare `SUPER+SHIFT+M` exit)
-- [x] **Bar: battery**: BAT meter (`++` charging, `--` discharging)
+- [x] **Bar: battery**: BAT meter (`++` charging, `--` discharging), click for the power menu (battery readout, power profile)
 - [x] **Bar: network**: click the segment (or `SUPER+N`) to open nmtui
 - [ ] **Network popup**: themed Quickshell menu (wifi list, signal, connect) to replace nmtui
 - [ ] **Bar**: finish the WIP modules: tray, media, workspace click-to-switch

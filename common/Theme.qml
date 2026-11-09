@@ -157,6 +157,8 @@ Singleton {
     readonly property int segmentInset: 3
     // Content width of a bar meter (label, value and fill)
     readonly property int barMeterWidth: 90
+    // Width of a menu dropped from a bar segment
+    readonly property int popupWidth: 240
 
     // SECTION Shape
 

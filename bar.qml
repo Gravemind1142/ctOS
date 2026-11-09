@@ -2,7 +2,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Networking
 import Quickshell.Services.Pipewire
-import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
@@ -145,20 +144,8 @@ PanelWindow {
             Divider {
                 visible: memMeter.visible
             }
-            Meter {
+            BatteryMeter {
                 id: batMeter
-
-                readonly property UPowerDevice device: UPower.displayDevice
-                readonly property int level: Math.round((device?.percentage ?? 0) * 100)
-                readonly property bool charging: device?.state === UPowerDeviceState.Charging || device?.state === UPowerDeviceState.FullyCharged || device?.state === UPowerDeviceState.PendingCharge
-                readonly property int lowLevel: 20
-
-                name: "BAT"
-                symbol: charging ? "++" : "--"
-                value: level.toString().padStart(3, "0") + "%"
-                percentage: level
-                // level bar: warning when low and draining, success when full
-                fillColor: level >= 100 ? Theme.success : (level < lowLevel && !charging ? Theme.warning : Theme.textPrimary)
 
                 // hidden on desktops, where the display device is not a laptop battery
                 visible: Settings.modules.battery.enabled && !!device?.isLaptopBattery

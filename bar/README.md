@@ -42,7 +42,7 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
     "workspaces": { "enabled": true, "count": 5 }, // 1-10 workspace boxes
     "cpu": { "enabled": true, "interval": 2 }, // seconds between samples
     "memory": { "enabled": true, "interval": 1 },
-    /* Hidden automatically on machines without a battery */
+    /* Hidden automatically on machines without a battery. Click it for battery details and the power profile (needs power-profiles-daemon) */
     "battery": { "enabled": true },
     /* Command run when the network segment is clicked */
     "network": { "enabled": true, "command": "kitty --class ctos-network -e nmtui" },
