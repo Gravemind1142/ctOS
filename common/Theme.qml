@@ -8,35 +8,294 @@ Singleton {
 
     // SECTION Primitives
 
-    readonly property color gray50: "#ffffff"
-    readonly property color gray100: "#cacaca"
+    readonly property color black: "#000000"
+    readonly property color white: "#ffffff"
+    // Blue-black of the hacker terminals and panel screens (sampled #000810)
+    readonly property color ink900: "#05080b"
+    readonly property color ink800: "#0b0f13"
+    readonly property color ink700: "#151a20"
+    // Inner dividers and table rules
+    readonly property color ink600: "#262c33"
+    // Muted data fills, e.g. the map landmass (sampled #384048)
+    readonly property color ink500: "#3a424b"
+    // Inverted label fill (sampled #e0e0e0 from the dossier)
+    readonly property color gray100: "#e0e0e0"
     readonly property color gray200: "#d9d9d9"
-    readonly property color gray300: "#c3c3c3"
+    readonly property color gray250: "#cacaca"
+    // Phone sub-labels (sampled #b8b8c0)
+    readonly property color gray300: "#b8b8bf"
     readonly property color gray500: "#7a7a7a"
-    readonly property color gray700: "#202020"
-    readonly property color gray800: "#0e0e0e"
-    readonly property color accentGreen: "#1bfd9c"
-    readonly property color accentRed: "#fc3e38"
-    readonly property color accentCyan: "#33bdea"
+    readonly property color gray600: "#4a4f55"
+    // Hack marker triangle and selection ring (sampled #58e8f0)
+    readonly property color cyan300: "#5ae6f0"
+    // WD1 profiler cyan
+    readonly property color cyan400: "#33bdea"
+    // Dossier category bar (sampled #30a0b8)
+    readonly property color cyan600: "#2c9fb6"
+    // Network line nodes, bright (sampled #80d8c0-#90f0d8)
+    readonly property color teal300: "#86e2cc"
+    // Network lines, at rest (sampled #307070)
+    readonly property color teal700: "#2e6f6c"
+    // Terminal phosphor green, 'bash*' (sampled #50f038)
+    readonly property color green400: "#4ef03a"
+    // Dim terminal green (sampled #408830)
+    readonly property color green700: "#3f8a30"
+    // Dossier red lifted for text contrast
+    readonly property color red400: "#f5412a"
+    // Dossier category bar (sampled #c81800-#d01800)
+    readonly property color red500: "#cc1c06"
+    // Phone 'secured network' badge (sampled #c84068)
+    readonly property color rose500: "#c8406a"
+    // Bright red (terminal)
+    readonly property color red300: "#ff7a66"
+    // Bright green (terminal)
+    readonly property color green300: "#a2f797"
+    // Extended palette: not in the references, added for warnings and the terminal
+    readonly property color amber400: "#e5b422"
+    // Bright amber (terminal)
+    readonly property color amber300: "#f5d36b"
+    // Terminal prompt blue (sampled #3048b0), lifted to 4.9:1
+    readonly property color blue400: "#5875ec"
+    // Bright blue (terminal)
+    readonly property color blue300: "#8fa3ff"
+    // Terminal magenta (sampled #400070), lifted to 5.7:1
+    readonly property color violet400: "#ad66f0"
+    // Bright violet (terminal)
+    readonly property color violet300: "#d39cf7"
 
     // SECTION Colors
 
-    readonly property color background: gray800
-    readonly property color backgroundBright: gray700
+    readonly property color background: ink900
+    // Panels that sit on the background
+    readonly property color surface: ink800
+    // Raised surface: hover rows, input wells
+    readonly property color surfaceRaised: ink700
+    // DEPRECATED: use surfaceRaised
+    readonly property color backgroundBright: surfaceRaised
+    // Behind modal overlays
+    readonly property color scrim: "#cc000000"
+    // Faint white wash behind an image or avatar
+    readonly property color tint: "#1effffff"
+    // DEPRECATED: use frame (outlines, brackets) or labelFill (filled blocks)
     readonly property color ctosGray: gray200
-    readonly property color textPrimary: gray50
-    readonly property color textPrimaryDim: gray100
+    // Panel and window outlines
+    readonly property color frame: gray200
+    // Inner dividers, table rules, inactive outlines
+    readonly property color frameSubtle: ink600
+    // Meter tracks and inactive data shapes
+    readonly property color fillMuted: ink500
+    readonly property color textPrimary: white
+    readonly property color textPrimaryDim: gray250
     readonly property color textPrimaryDimmer: gray300
     readonly property color textSecondary: gray500
+    // DEPRECATED: use textSecondary (text) or frameSubtle (rules)
     readonly property color secondary: gray500
-    readonly property color textAccent: accentCyan
-    readonly property color success: accentGreen
-    readonly property color error: accentRed
+    readonly property color textDisabled: gray600
+    readonly property color textAccent: cyan400
+    // Inverted label block (SMART PHONE, INSURANCE)
+    readonly property color labelFill: gray100
+    // Text on any filled block: label, info, error
+    readonly property color labelText: black
+    // Category tag fill
+    readonly property color infoFill: cyan600
+    // Alert tag fill
+    readonly property color errorFill: red500
+    // Focus/selection ring and hack marker. The system's attention
+    readonly property color focus: cyan300
+    readonly property color networkLine: teal700
+    readonly property color networkNode: teal300
+    readonly property color success: green400
+    readonly property color successDim: green700
+    readonly property color error: red400
+    // Needs attention but hasn't failed: low battery, degraded link
+    readonly property color warning: amber400
+    // Locked or protected badge (WPA network, encrypted device)
+    readonly property color secured: rose500
 
     // SECTION Typography
 
-    // Insider voice (monospace). Overridden at runtime by the bar's per-user config
-    property string fontInsider: "JetBrainsMono Nerd Font"
+    // Insider voice (monospace)
+    readonly property string fontInsider: "JetBrainsMono Nerd Font"
     // Public voice (Helvetica-style neo-grotesk)
     readonly property string fontPublic: "Nimbus Sans"
+    // Micro labels under a value (FREE, WPA PASSWORD)
+    readonly property int fontSize2xs: 11
+    readonly property int fontSizeXs: 12
+    // Default body and field labels
+    readonly property int fontSizeSm: 14
+    // Bar segments, inputs
+    readonly property int fontSizeMd: 16
+    readonly property int fontSizeLg: 18
+    // Profiler values, card titles
+    readonly property int fontSizeXl: 22
+    readonly property int fontSizeDisplaySm: 34
+    readonly property int fontSizeDisplayMd: 48
+    // Greeter splash wordmark
+    readonly property int fontSizeDisplayLg: 64
+    readonly property int fontWeightLight: 300
+    readonly property int fontWeightRegular: 400
+    readonly property int fontWeightMedium: 500
+    readonly property int fontWeightBold: 600
+    readonly property int trackingNone: 0
+    // Uppercase labels
+    readonly property int trackingLabel: 1
+    // Masked input, spaced readouts
+    readonly property int trackingWide: 5
+
+    // SECTION Spacing
+
+    readonly property int space2xs: 2
+    readonly property int spaceXs: 4
+    readonly property int spaceSm: 6
+    readonly property int spaceMd: 8
+    readonly property int spaceLg: 12
+    readonly property int spaceXl: 16
+    readonly property int space2xl: 24
+    readonly property int space3xl: 32
+    readonly property int barHeight: 37
+    // Gap between a bar segment's corner frame and the bar edge
+    readonly property int segmentInset: 3
+
+    // SECTION Shape
+
+    // Containers are always square
+    readonly property int radius: 0
+    // Bar border, dividers, corner brackets, network lines
+    readonly property int strokeHairline: 1
+    // Panel and window outlines
+    readonly property int strokeFrame: 2
+    // Hack marker and focus ring
+    readonly property int strokeMarker: 3
+    // Length of a corner bracket arm
+    readonly property int cornerArm: 7
+    // Size of a greeter accent square
+    readonly property int accentSize: 4
+    // Hard offset shadow under stacked tags
+    readonly property int labelShadow: 2
+
+    // SECTION Controls
+
+    // Buttons, entries, combo boxes. Compact for desktop density
+    readonly property int controlHeight: 28
+    readonly property int controlPadding: spaceMd
+    // Checkbox and radio box
+    readonly property int indicatorSize: 14
+    // Slider and progress track
+    readonly property int trackThickness: 2
+    // Slider handle (square)
+    readonly property int handleSize: 12
+    // Overlay scrollbar at rest
+    readonly property int scrollbarWidth: 4
+    readonly property int scrollbarWidthHover: 8
+    // Focus outline on controls
+    readonly property int focusRing: strokeFrame
+
+    // SECTION Window
+
+    // Compositor window border
+    readonly property int windowBorder: strokeFrame
+    readonly property color windowBorderActive: frame
+    // Dimmer, but still visible like the background windows in the references
+    readonly property color windowBorderInactive: textSecondary
+    // Half the gutter between tiled windows (8px total)
+    readonly property int windowGapsIn: spaceXs
+    readonly property int windowGapsOut: spaceMd
+    // Title strip (hyprbars)
+    readonly property int windowTitleHeight: 20
+    readonly property color windowTitleBackground: background
+    readonly property color windowTitleText: textSecondary
+    readonly property int windowTitleTextSize: fontSize2xs
+    readonly property int windowTitlePadding: spaceMd
+
+    // SECTION Dedsec
+
+    // Takeover background: pure black, dropping ctOS's blue cast
+    readonly property color dedsecBackground: black
+    readonly property color dedsecText: white
+    // The one fact that caused the breach
+    readonly property color dedsecSignal: error
+    // One glitch frame during erosion
+    readonly property int durationGlitch: durationInstant
+
+    // SECTION Opacity
+
+    // A trace left behind as something leaves
+    readonly property real opacityGhost: 0.1
+    // Content pushed back: behind a modal, disabled imagery
+    readonly property real opacityDim: 0.5
+    // Imagery under or beside text, so it doesn't outshine it
+    readonly property real opacitySoft: 0.9
+
+    // SECTION Motion
+
+    // Opacity blips, glitch frames
+    readonly property int durationInstant: 50
+    // Hover, press, accent slide
+    readonly property int durationFast: 100
+    // Small elements entering or leaving
+    readonly property int durationShort: 200
+    // Panels, popups, layout shifts
+    readonly property int durationMedium: 300
+    // Screen-level transitions
+    readonly property int durationLong: 500
+    // Meter fill following a new value
+    readonly property int durationMeter: 1000
+    // Canonical hack-in-progress fill
+    readonly property int durationHack: 2000
+    // Arriving: fast start, soft landing
+    readonly property int easeEnter: Easing.OutCubic
+    // Leaving: holds, then snaps away
+    readonly property int easeExit: Easing.InExpo
+    // Moving or resizing in place
+    readonly property int easeMove: Easing.InOutCubic
+    // Accent slides, typewriter caret
+    readonly property int easeSnap: Easing.OutExpo
+    // Progress fills
+    readonly property int easeLinear: Easing.Linear
+
+    // SECTION Terminal
+
+    readonly property color terminalBackground: background
+    readonly property color terminalForeground: gray200
+    readonly property color terminalCursor: textPrimary
+    readonly property color terminalSelectionBackground: labelFill
+    readonly property color terminalSelectionForeground: labelText
+    readonly property color ansiBlack: ink700
+    readonly property color ansiRed: red400
+    readonly property color ansiGreen: green400
+    readonly property color ansiYellow: amber400
+    readonly property color ansiBlue: blue400
+    readonly property color ansiMagenta: violet400
+    readonly property color ansiCyan: cyan400
+    readonly property color ansiWhite: gray250
+    readonly property color ansiBrightBlack: gray500
+    readonly property color ansiBrightRed: red300
+    readonly property color ansiBrightGreen: green300
+    readonly property color ansiBrightYellow: amber300
+    readonly property color ansiBrightBlue: blue300
+    readonly property color ansiBrightMagenta: violet300
+    readonly property color ansiBrightCyan: cyan300
+    readonly property color ansiBrightWhite: white
+
+    // SECTION Syntax
+
+    readonly property color syntaxText: gray200
+    readonly property color syntaxComment: gray500
+    readonly property color syntaxPunctuation: gray250
+    readonly property color syntaxKeyword: white
+    readonly property color syntaxString: green400
+    // Numbers, booleans, constants
+    readonly property color syntaxConstant: cyan400
+    readonly property color syntaxFunction: blue400
+    // Types, classes, interfaces
+    readonly property color syntaxType: violet400
+    // Escapes, regex, decorators, macros
+    readonly property color syntaxSpecial: amber400
+    readonly property color syntaxError: error
+    readonly property color syntaxWarning: warning
+    readonly property color syntaxInfo: textAccent
+    readonly property color syntaxHint: textSecondary
+    readonly property color diffAdded: success
+    readonly property color diffRemoved: error
+    readonly property color diffChanged: warning
 }
