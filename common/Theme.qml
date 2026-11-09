@@ -178,6 +178,8 @@ Singleton {
     readonly property int crosshairSize: 9
     // Round status dot on a badge or bar icon
     readonly property int statusDot: 6
+    // Workspace window pip: one per extra window
+    readonly property int pipSize: 3
     // Hard offset shadow under stacked tags
     readonly property int labelShadow: 2
 

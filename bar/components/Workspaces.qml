@@ -21,6 +21,8 @@ Row {
 
             Workspace {
                 active: parent.index === root.selectedIndex
+                windows: WorkspaceManager.windows(parent.index + 1)
+                onClicked: WorkspaceManager.focus(parent.index + 1)
             }
 
             Divider {}

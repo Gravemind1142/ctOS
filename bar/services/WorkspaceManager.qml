@@ -13,6 +13,15 @@ Singleton {
 
     property int selectedWorkspaceId
 
+    // App ids of a workspace's windows, the one last focused there first
+    function windows(workspaceId: int): var {
+        return _handler ? _handler.windows(workspaceId) : [];
+    }
+
+    function focus(workspaceId: int) {
+        _handler?.focus(workspaceId);
+    }
+
     Component.onCompleted: {
         if (Desktop.compositor === Desktop.Compositor.Hyprland) {
             _handler = HyprlandHandler;

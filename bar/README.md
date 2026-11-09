@@ -5,6 +5,7 @@ To use the bar, you must have the following core components installed on your sy
 ### Required
 
 - **[Quickshell](https://quickshell.org):** The engine used to render the QML interface and provide the necessary Wayland desktop shell integrations.
+- **Qt Quick Effects:** Recolours app icons in the workspace cells. Bundled with `qt6-declarative` on Arch; on Debian/Ubuntu install `qml6-module-qtquick-effects`.
 
 ## Getting Started
 

@@ -320,7 +320,7 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 
 ### Dimensions
 
-- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Like the map dashboard's tiled panels, the bar is one frame divided into cells: segments sit `segmentInset` (3px) inside it, separated by `Divider`s (`frameSubtle`), with no frame of their own. Meters are `barMeterWidth` (90px) wide. Clickable segments (network, audio) follow the control states: on hover the brackets settle in around a `surfaceRaised` fill, on press an inverted block for one `durationFast`. The active workspace gets brackets and the crosshair; the others are empty cells. The network segment shows no colour while linked; offline it reads `OFFLINE` in `textSecondary` with an `error` status dot. The left end is the ctOS logo in `labelText` on its own square `labelFill` block, flush with the bar's edges, then the `Brandmark` (public voice) inset `spaceSm` on every side so the `OS` sits clear of the border.
+- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Like the map dashboard's tiled panels, the bar is one frame divided into cells: segments sit `segmentInset` (3px) inside it, separated by `Divider`s (`frameSubtle`), with no frame of their own. Meters are `barMeterWidth` (90px) wide. Clickable segments (network, audio) follow the control states: on hover the brackets settle in around a `surfaceRaised` fill, on press an inverted block for one `durationFast`. The active workspace gets brackets. A workspace with windows shows the icon of the window last focused there, recoloured to `textPrimary` when active and `textSecondary` otherwise, with a round `pipSize` pip under it for each other window. An empty active workspace shows the crosshair; empty inactive ones are blank cells. The network segment shows no colour while linked; offline it reads `OFFLINE` in `textSecondary` with an `error` status dot. The left end is the ctOS logo in `labelText` on its own square `labelFill` block, flush with the bar's edges, then the `Brandmark` (public voice) inset `spaceSm` on every side so the `OS` sits clear of the border.
 - **Panels** follow the reference's grid: framed rectangles that tile edge to edge with a `spaceMd`–`spaceLg` gutter, sub-panels nested inside a parent frame.
 
 ## Shape
@@ -338,6 +338,7 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 | `accentSizeSm` | 2 | Accent squares around a small bar icon |
 | `crosshairSize` | 9 | Active-workspace crosshair |
 | `statusDot` | 6 | Round status dot on a badge or bar icon |
+| `pipSize` | 3 | Workspace window pips, one per extra window |
 
 ### Motifs
 
@@ -552,7 +553,7 @@ Reuse these before writing new ones. Shared ones go in `common/components`.
 | `Clock` | bar | Date, time and zone as one ruled readout (`091126-0330-PST`), time bright, the rest dim |
 | `SignalIcon` | bar | The phone's network glyph; dims and takes an `error` status dot without a link |
 | `SystemLabel` | bar | The ctOS logo block and the brandmark, at the left of the bar |
-| `Workspace` / `Workspaces` | bar | Workspace cells; the active one gets brackets and a crosshair |
+| `Workspace` / `Workspaces` | bar | Workspace cells: lead app icon plus a pip per extra window; the active one gets brackets (and a crosshair when empty). Click to switch, with the control states on hover and press |
 | `Surface` | greeter | A framed panel with an animated side bar |
 | `IdentityCard` | greeter | The profiler pattern: name and labelled facts |
 | `FieldGroup` / `PasswordField` | greeter | Labelled input with a block cursor and masked characters |
