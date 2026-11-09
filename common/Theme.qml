@@ -218,8 +218,12 @@ Singleton {
     readonly property int windowGapsOut: spaceMd
     // Title strip (hyprbars)
     readonly property int windowTitleHeight: 20
-    readonly property color windowTitleBackground: background
-    readonly property color windowTitleText: textSecondary
+    // Title strip of an unfocused window: same colour as its border, so frame and strip read as one solid block
+    readonly property color windowTitleBackground: windowBorderInactive
+    // Title strip of the focused window, matching its border
+    readonly property color windowTitleBackgroundActive: windowBorderActive
+    // Title text and icon on the filled strip
+    readonly property color windowTitleText: labelText
     readonly property int windowTitleTextSize: fontSize2xs
     readonly property int windowTitlePadding: spaceMd
 

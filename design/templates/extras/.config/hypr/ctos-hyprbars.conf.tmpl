@@ -25,7 +25,8 @@ plugin {
         bar_padding = {{windowTitlePadding}}
         bar_button_padding = {{spaceXs}}
 
-        # the border wraps the strip, so frame + strip read as one window
+        # the border wraps the strip and the strip is filled in the border's
+        # colour, so frame + strip read as one solid block
         bar_part_of_window = true
         bar_precedence_over_border = true
         bar_blur = false
@@ -38,4 +39,12 @@ plugin {
 
         on_double_click = hyprctl dispatch fullscreen 1
     }
+}
+
+# the strip follows the border: inactive colour by default (bar_color above),
+# active colour on the focused window
+windowrule {
+    name = ctos-hyprbars-focus
+    match:focus = true
+    hyprbars:bar_color = rgb({{windowTitleBackgroundActive|bare}})
 }

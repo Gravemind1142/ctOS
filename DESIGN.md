@@ -361,7 +361,7 @@ From the reference frames, in the order you should reach for them:
 
 ### Windows
 
-The compositor draws motif 1 around every app window, following the terminal in the references: a bright outer frame and a dark title strip with a small square icon and dim title text.
+The compositor draws motif 1 around every app window, following the terminal in the references: a bright outer frame whose title strip is filled in the frame's own colour, with a small square icon and dark title text.
 
 | Token | Value | Use |
 | --- | --- | --- |
@@ -369,10 +369,11 @@ The compositor draws motif 1 around every app window, following the terminal in 
 | `windowBorderActive` / `windowBorderInactive` | `frame` / `textSecondary` | Focused / unfocused border. Unfocused stays visible, like the background windows in the references |
 | `windowGapsIn` / `windowGapsOut` | 4 / 8px | 8px gutter between windows, 8px to the screen edge |
 | `windowTitleHeight` | 20px | Title strip and group tabs |
-| `windowTitleBackground` / `windowTitleText` | `background` / `textSecondary` | Title strip |
+| `windowTitleBackgroundActive` / `windowTitleBackground` | `windowBorderActive` / `windowBorderInactive` | Focused / unfocused title strip, filled in the border colour so frame and strip are one block |
+| `windowTitleText` | `labelText` | Title text and icon on the strip |
 | `windowTitleTextSize` | 11px | Title text, insider font |
 
-In Hyprland, `ctos-look.conf` provides the frame, gaps, square corners and animations. The optional `ctos-hyprbars.conf` adds the title strip through the hyprbars plugin, with the border drawn around the strip. Grouped windows show tabs: the active one is an inverted block.
+In Hyprland, `ctos-look.conf` provides the frame, gaps, square corners and animations. The optional `ctos-hyprbars.conf` adds the title strip through the hyprbars plugin, with the border drawn around the strip and a focus window rule switching the strip to the active colour. Grouped windows show tabs: the active one is an inverted block.
 
 **Known gaps from the reference:** hyprbars shows the window's own title in its own case (`kitty`, not `NEW WINDOW`), and can't draw the dim rule under the strip.
 
