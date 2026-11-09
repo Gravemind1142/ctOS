@@ -403,6 +403,7 @@ Motion is for **transitions** (see [Adapting it to a desktop](#adapting-it-to-a-
 | `durationLong` | 500 | Screen-level transitions (splash, unlock) |
 | `durationMeter` | 1000 | Meter fill catching up to a new value |
 | `durationHack` | 2000 | A hack in progress (the WD1 profiler's ~2 s) |
+| `durationConfirm` | 4000 | How long an armed destructive action (log out, reboot, shut down) waits for its confirming press |
 
 Most UI motion should be `durationFast`–`durationMedium`. If something takes longer than `durationLong` it must be showing progress.
 
@@ -553,6 +554,8 @@ Reuse these before writing new ones. Shared ones go in `common/components`.
 | `AudioMeter` | bar | `Meter` on a Pipewire node: scroll for volume, click to mute |
 | `BatteryMeter` | bar | `Meter` on the UPower battery; click to open the `PowerMenu`, brackets held while it is open |
 | `PowerMenu` | bar | Popup tiled under its segment (`popupWidth`, menu treatment, label block header): battery readout and power-profile rows, the active one inverted. Click outside or Escape closes |
+| `UserSegment` | bar | `SimpleSegment` with the operator's name; click to open the `SessionMenu`, brackets held while it is open |
+| `SessionMenu` | bar | Popup tiled under its segment: operator readout (name, host, session, uptime) and session action rows. Log out, reboot and shut down arm on the first press as the destructive-action block (`error` fill) and run on a second press within `durationConfirm`; Escape disarms |
 | `Clock` | bar | Date, time and zone as one ruled readout (`091126-0330-PST`), time bright, the rest dim |
 | `SignalIcon` | bar | The phone's network glyph; dims and takes an `error` status dot without a link |
 | `SystemLabel` | bar | The ctOS logo block and the brandmark, at the left of the bar |

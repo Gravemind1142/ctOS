@@ -46,8 +46,18 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
     "battery": { "enabled": true },
     /* Click the segment for the network menu. Command run by the menu's ADVANCED action (and for enterprise networks) */
     "network": { "enabled": true, "command": "kitty --class ctos-network -e nmtui" },
-    /* Label shown instead of $USER */
-    "user": { "enabled": true, "label": "" },
+    /* Label shown instead of $USER. Click the segment for the session menu; each command runs from its row, and an empty command hides the row */
+    "user": {
+      "enabled": true,
+      "label": "",
+      "commands": {
+        "lock": "loginctl lock-session",
+        "logout": "hyprctl dispatch exit",
+        "suspend": "systemctl suspend",
+        "reboot": "systemctl reboot",
+        "shutdown": "systemctl poweroff"
+      }
+    },
     /* Label after the clock, empty shows the system timezone (e.g. "PST") */
     "status": { "enabled": true, "timezone": "" }
   }

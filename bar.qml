@@ -176,21 +176,9 @@ PanelWindow {
                 visible: netSegment.visible && (userSegment.visible || Settings.modules.status.enabled)
             }
 
-            SimpleSegment {
+            UserSegment {
                 id: userSegment
                 visible: Settings.modules.user.enabled
-                text: (Settings.modules.user.label || Quickshell.env("USER")).toUpperCase()
-
-                icon: Text {
-                    anchors.centerIn: parent
-                    anchors.verticalCenterOffset: -1  // optical nudge: glyph sits low in its line box
-
-                    text: "▨"
-                    color: userSegment.inkColor
-                    font.pixelSize: Theme.fontSizeLg
-                    font.family: Theme.fontInsider
-                    font.weight: Theme.fontWeightBold
-                }
             }
 
             Divider {

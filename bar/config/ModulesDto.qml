@@ -23,10 +23,20 @@ JsonObject {
         property bool enabled: true
     }
 
+    // run by the session menu's rows; an empty command hides its row
+    component SessionCommandsDto: JsonObject {
+        property string lock: "loginctl lock-session"
+        property string logout: "hyprctl dispatch exit"
+        property string suspend: "systemctl suspend"
+        property string reboot: "systemctl reboot"
+        property string shutdown: "systemctl poweroff"
+    }
+
     component UserDto: JsonObject {
         property bool enabled: true
         // empty shows $USER
         property string label: ""
+        property SessionCommandsDto commands: SessionCommandsDto {}
     }
 
     component StatusDto: JsonObject {

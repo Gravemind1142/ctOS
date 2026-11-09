@@ -258,6 +258,8 @@ Singleton {
     readonly property int durationMeter: 1000
     // Canonical hack-in-progress fill
     readonly property int durationHack: 2000
+    // How long an armed destructive action waits for its confirming press
+    readonly property int durationConfirm: 4000
     // Arriving: fast start, soft landing
     readonly property int easeEnter: Easing.OutCubic
     // Leaving: holds, then snaps away
