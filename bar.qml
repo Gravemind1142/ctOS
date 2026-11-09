@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 import Quickshell.Services.SystemTray
 import QtQuick
@@ -145,6 +146,35 @@ PanelWindow {
                 liveSymbol: "))"
                 node: Pipewire.defaultAudioSink
             }
+
+            Divider {
+                visible: keybindSegment.visible
+            }
+
+            KeybindSegment {
+                id: keybindSegment
+                visible: Settings.modules.keybinds.enabled
+                cheatsheet: cheatsheetOverlay
+            }
+        }
+    }
+
+    Cheatsheet {
+        id: cheatsheetOverlay
+    }
+
+    // `qs --path <install>/bar.qml ipc call cheatsheet toggle`, bound to SUPER+/ in ctos.conf
+    IpcHandler {
+        target: "cheatsheet"
+
+        function toggle(): void {
+            cheatsheetOverlay.toggle();
+        }
+        function open(): void {
+            cheatsheetOverlay.shown = true;
+        }
+        function close(): void {
+            cheatsheetOverlay.shown = false;
         }
     }
 }

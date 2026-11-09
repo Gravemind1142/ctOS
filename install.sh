@@ -314,6 +314,10 @@ function generate_hyprland_snippet() {
   echo "# sourced from hyprland.conf, delete the 'source' line there to disable"
   echo
   echo "exec-once = ${prefix}env QT_SCALE_FACTOR_ROUNDING_POLICY=Round qs --path $INSTALL_DIR/bar.qml"
+  echo
+  echo "# keybind cheatsheet, also the [?] KEYS cell at the right of the bar."
+  echo "# bindd descriptions name binds on it: 'Group: Action', or just 'Action'"
+  echo "bindd = SUPER, slash, System: Keybinds, exec, qs --path $INSTALL_DIR/bar.qml ipc call cheatsheet toggle"
 
   if command -v hyprpaper >/dev/null; then
     echo "exec-once = ${prefix}hyprpaper"
@@ -323,7 +327,7 @@ function generate_hyprland_snippet() {
     echo "exec-once = ${prefix}hypridle"
     echo
     echo "# lock with the ctOS greeter (lock_cmd in hypridle.conf)"
-    echo "bind = SUPER, L, exec, loginctl lock-session"
+    echo "bindd = SUPER, L, System: Lock, exec, loginctl lock-session"
   fi
 
   if [[ -n "$polkit_agent" ]]; then
@@ -334,7 +338,7 @@ function generate_hyprland_snippet() {
   if command -v nmtui >/dev/null && command -v kitty >/dev/null; then
     echo
     echo "# full network manager: SUPER+N, or ADVANCED in the bar's network menu"
-    echo "bind = SUPER, N, exec, kitty --class ctos-network -e nmtui"
+    echo "bindd = SUPER, N, System: Network, exec, kitty --class ctos-network -e nmtui"
     echo "windowrule {"
     echo "    name = ctos-network"
     echo "    match:class = ^(ctos-network)\$"

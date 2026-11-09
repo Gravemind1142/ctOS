@@ -70,6 +70,7 @@ See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated b
 
 ## Finishing
 
-- [ ] **Keybind cheatsheet**: a popup overlay, or a section in the README
+- [x] **Keybind cheatsheet**: `[?] KEYS` at the right of the bar or `SUPER+/`; full-screen overlay of the live binds (`bindd` descriptions name them)
+  - [ ] Give the default binds in `hyprland.conf` `bindd` descriptions where the derived label is weak
 - [ ] **Install script**: add each finished item above as an optional step
 - [ ] **Screenshots / showcase** in README

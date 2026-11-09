@@ -59,6 +59,11 @@ JsonObject {
         property string timezone: ""
     }
 
+    component KeybindsDto: JsonObject {
+        // the [?] KEYS cell; the cheatsheet still opens from its keybind when hidden
+        property bool enabled: true
+    }
+
     property WorkspacesDto workspaces: WorkspacesDto {}
     property TrayDto tray: TrayDto {}
     property CpuDto cpu: CpuDto {}
@@ -69,4 +74,5 @@ JsonObject {
     property NetworkDto network: NetworkDto {}
     property UserDto user: UserDto {}
     property StatusDto status: StatusDto {}
+    property KeybindsDto keybinds: KeybindsDto {}
 }

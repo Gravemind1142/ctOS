@@ -161,6 +161,10 @@ Singleton {
     readonly property int popupWidth: 240
     // Width of a bar menu that lists names (network list)
     readonly property int popupWidthWide: 300
+    // Width of one column of bind groups in the keybind cheatsheet
+    readonly property int cheatsheetColumnWidth: 330
+    // Key-cap column in a cheatsheet row, so the actions line up
+    readonly property int cheatsheetKeysWidth: 120
 
     // SECTION Shape
 

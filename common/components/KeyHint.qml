@@ -1,6 +1,7 @@
 import QtQuick
 
 import qs.common
+import qs.common.components
 
 // Motif 10, key hint: the key's name in a small hairline cap, then the action in uppercase
 // (`[DEL] FORGET`). For keybind hints in popups, the OSD and the cheatsheet.
@@ -10,30 +11,15 @@ Row {
     property string key: ""
     property string action: ""
     property color color: Theme.textSecondary
+    property int pixelSize: Theme.fontSize2xs
 
     spacing: Theme.spaceXs
 
-    Rectangle {
+    KeyCap {
         anchors.verticalCenter: parent.verticalCenter
-        width: Math.max(height, keyText.implicitWidth + 2 * Theme.spaceXs)
-        height: keyText.implicitHeight + Theme.space2xs
-        color: "transparent"
-        border {
-            width: Theme.strokeHairline
-            color: root.color
-        }
-
-        Text {
-            id: keyText
-            anchors.centerIn: parent
-            text: root.key
-            color: root.color
-            font {
-                family: Theme.fontInsider
-                pixelSize: Theme.fontSize2xs
-                weight: Theme.fontWeightBold
-            }
-        }
+        key: root.key
+        inkColor: root.color
+        pixelSize: root.pixelSize
     }
 
     Text {
@@ -42,7 +28,7 @@ Row {
         color: root.color
         font {
             family: Theme.fontInsider
-            pixelSize: Theme.fontSize2xs
+            pixelSize: root.pixelSize
             weight: Theme.fontWeightBold
             letterSpacing: Theme.trackingLabel
         }
