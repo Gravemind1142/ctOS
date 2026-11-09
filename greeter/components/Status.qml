@@ -24,7 +24,7 @@ Surface {
             text: field.label
             color: Theme.textPrimaryDim
             font {
-                family: Settings.fontFamily
+                family: Theme.fontInsider
                 pixelSize: 12
             }
         }
@@ -34,7 +34,7 @@ Surface {
             text: field.value
             color: Theme.textPrimary
             font {
-                family: Settings.fontFamily
+                family: Theme.fontInsider
                 pixelSize: 18
                 weight: 500
             }

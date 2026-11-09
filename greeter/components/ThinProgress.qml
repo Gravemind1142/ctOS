@@ -49,7 +49,7 @@ ColumnLayout {
 
         color: Theme.textPrimary
         font {
-            family: Settings.fontFamily
+            family: Theme.fontInsider
             weight: 300
             pixelSize: 12
         }

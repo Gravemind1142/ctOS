@@ -6,32 +6,42 @@ What's still needed before ctOS counts as a full rice. Anything themed should us
 
 See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated before new work.
 
-- [ ] **Migrate literals to tokens**: replace the ~86 hardcoded colours, sizes and durations in QML with `Theme.<token>`. Includes moving the greeter from `Settings.fontFamily` to `Theme.fontInsider`/`fontPublic` and removing the duplicate font defaults in the bar and greeter `GeneralDto`. Needs the spacing, motion and shape scales below
-- [ ] **Spacing & layout**: choose screen-height scaling (`Units.vh`) or fixed pixels × display scale; define the spacing scale, stroke widths and bar/panel dimensions
-- [ ] **Motion**: duration and easing tokens; which signature transitions to keep (typewriter, accent slide-in, ctOS → DedSec erosion); tie into the greeter's animation-mode setting
-- [ ] **Shape**: where corner brackets are used and whether rounding is always zero
-- [ ] **Iconography**: icon style (8-bit / early cell phone) and an icon theme that matches, for GTK too
-- [ ] **Remaining principles**: motion restraint, accent use, information density
-- [ ] **Colour**: check success green and error red against the source; define the full role list and hover/active/disabled states
-- [ ] **Type scale**: sizes, weights and letter-spacing for both voices
-- [ ] **Components**: inventory of `common/`, `bar/` and `greeter/` components, with when to use each
-- [ ] **First template target**: kitty, to prove the `design/templates` pipeline end to end
+- [ ] **Migrate literals to tokens**: replace the hardcoded colours, sizes and durations in QML with `Theme.<token>`, following the allowed-literal rules in DESIGN.md → Rules. Also clear the deprecated tokens the build warns about (`ctosGray`, `secondary`, `backgroundBright`), and switch public surfaces (splash wordmark) to `Theme.fontPublic`
+- [x] **Literal rules, opacity tokens, token cleanup**: see DESIGN.md → Rules, Opacity, and the `deprecated` token field
+- [x] **DedSec**: levels, look and motion (DESIGN.md → DedSec)
+- [ ] **DedSec components**: `Glitch`, `Scramble`, `Takeover`, with the first breach-level surface
+- [x] **Font is not a user setting**: `fontFamily` removed from bar and greeter configs; QML and generated configs use `Theme.fontInsider`
+- [x] **Spacing & layout**: logical px for docked chrome, `Units.vh` only for full-screen compositions; spacing scale, strokes, bar dimensions
+- [x] **Motion**: duration and easing tokens, signature transitions, reduced-motion rules
+- [ ] **Reduced motion**: wire the rules in DESIGN.md → Motion into the greeter's animation-mode setting
+- [x] **Shape**: zero radius, stroke widths, the eight motifs from the references
+- [x] **Iconography**: style and SVG conventions
+- [ ] **Icon theme**: find or draw one that matches, for GTK too
+- [x] **Remaining principles**: motion restraint, accent use, information density
+- [x] **Colour**: palette sampled from references; role list and states
+- [x] **Type scale**: sizes, weights and letter-spacing for both voices
+- [x] **Components**: inventory of `common/`, `bar/` and `greeter/` components, with when to use each
+- [ ] **New components**: window/panel frame with title strip, label block, tag, list row with badge (see DESIGN.md → Components)
+- [x] **Extended palette**: ANSI 16 colours, terminal chrome and code-highlighting roles (`terminal`, `syntax` tokens)
+- [ ] **First template target**: kitty, to prove the `design/templates` pipeline end to end (tokens ready)
 - [ ] **Nimbus Sans dependency**: add the URW base-35 fonts to the install script / README dependencies
-- [ ] **Nautilus**: insider or public?
-- [ ] **References**: collect screenshots in `design/references/`; read the NYCTA Graphics Standards Manual and the Legion UI artists' portfolios
+- [x] **Nautilus**: public (see DESIGN.md → Principle 1)
+- [x] **Controls**: widget styles for Quickshell, GTK and Qt (DESIGN.md → Controls)
+- [ ] **References**: more frames (profiler, hack prompts, camera view, boot); read the NYCTA Graphics Standards Manual and the Legion UI artists' portfolios
 
 ## Core look
 
-- [ ] **Window decorations (Hyprland)**: borders are still the default cyan/green gradient, with default rounding, gaps and animations. Set ctOS colours, sharp or minimal corners, and custom animation curves
+- [x] **Window decorations (Hyprland)**: `ctos-look.conf` (frame, gaps, curves) and optional hyprbars title strips, generated from tokens
+- [ ] **Title strip fidelity**: uppercase titles and the dim rule under the strip aren't possible with hyprbars; revisit if the plugin gains them
 - [ ] **Terminal (kitty)**: has colours, font and padding so far. Still needed: cursor style, tab bar, background opacity/blur, ctOS-coloured borders
 - [ ] **Shell prompt**: still plain bash. Add a themed prompt (e.g. starship), or switch to zsh/fish
 - [ ] **App launcher (fuzzel)**: no config yet. Theme it, or build a Quickshell launcher so it matches the bar
 - [ ] **File manager (nautilus)**: follows the GTK theme, see below
-- [ ] **GTK 3/4 theme**: no `gtk.css`/`settings.ini` yet. This one change themes nautilus and most other apps
-- [ ] **Qt theme**: qt5ct/qt6ct or Kvantum, so Qt apps match too
+- [ ] **GTK 3/4 theme**: no `gtk.css`/`settings.ini` yet. This one change themes nautilus and most other apps. Spec in DESIGN.md → Controls; public and insider builds from one template
+- [ ] **Qt theme**: qt6ct/qt5ct + Fusion with a ctOS colour scheme first; Kvantum only if needed
 - [ ] **Icon theme**
 - [ ] **Cursor theme**: set `HYPRCURSOR_THEME`/`XCURSOR_THEME` and the size
-- [ ] **Fonts**: JetBrainsMono Nerd Font is installed. Decide on a UI font for GTK/Qt and set it everywhere
+- [ ] **Fonts**: set `fontPublic` (Nimbus Sans) as the GTK/Qt UI font and `fontInsider` for insider apps (decided in DESIGN.md → Controls)
 
 ## Desktop shell pieces
 

@@ -54,6 +54,8 @@ Wallpaper ([hyprpaper](https://github.com/hyprwm/hyprpaper)) and idle lock ([hyp
 The [install script](install.sh) offers to set these up after the main install. Every step asks first, and existing configs are never overwritten.
 
 - **Hyprland session**: writes `~/.config/hypr/ctos.conf` (bar, wallpaper, idle lock, polkit agent autostart) and adds a `source` line to your `hyprland.conf`, after backing it up. Log into Hyprland once before running it so Hyprland can generate its default config.
+- **Window look**: sources [`ctos-look.conf`](extras/.config/hypr/ctos-look.conf) (square 2px frames, narrow gaps, no shadows or blur, ctOS animation curves) from your `hyprland.conf`, after backing it up.
+- **Title strips**: builds and enables the [hyprbars](https://github.com/hyprwm/hyprland-plugins/tree/main/hyprbars) plugin with `hyprpm` (asks for sudo), then sources [`ctos-hyprbars.conf`](extras/.config/hypr/ctos-hyprbars.conf). If a Hyprland update breaks the plugin, remove that `source` line to fall back to plain frames.
 - **Terminal extras**: symlinks the kitty and fastfetch configs into `~/.config`.
 
 <br>

@@ -39,6 +39,36 @@ Findings distilled from written sources about the Watch Dogs UI, ctOS, Blume and
 
 **Implications:** move between states with transitions rather than hard swaps. A ctOS → DedSec "erosion" (clean modernism being degraded by dither and glitch) is the canonical intrusion transition.
 
+## Reference frames _(observed)_
+
+From the WD1 cutscene frames in [`references/`](references/README.md). All observed, none sourced from text.
+
+- **Panels are outlined, not filled.** Black panels with a thin light-grey outline, tiled in a grid with sub-panels nested inside. Corners are square everywhere. The only round things are controls and badges.
+- **Solid fill means "label".** A white block with black Helvetica names the thing it sits on (`SMART PHONE`, `INSURANCE`, `THE MERLAUT HOTEL`). Categories are full-width coloured bars (red, cyan, white), always with black mono text, stacked with a hard black offset.
+- **Both voices on one screen.** Helvetica for the title/label block, a squarish wide mono for the data beneath it. This matches the public/insider split.
+- **Colour is sparse and categorical.** Cyan for the hack marker and selection, teal for network lines, red for an alert category, green and blue only inside the terminal, rose for the "secured" dot.
+- **The hack marker** is an inverted triangle outline, thick and cyan, joined to a label block.
+- **Network lines** are thin teal lines with small nodes spaced evenly along them. Routes on the map are dotted white arcs.
+- **Dense data stays legible** through ruling: dashed lines between rows, aligned columns, uppercase labels.
+- **The terminal** has a blue-black background (not neutral grey), a light frame and a tiny uppercase title strip.
+- **The `ctOS` wordmark** on the dossier sets each letter in its own outlined cell.
+
+**Implications:** these drive the colour roles, the shape motifs and the "outline, not fill" rule in [DESIGN.md](../DESIGN.md#shape).
+
+## Gameplay HUD _(observed)_
+
+From the HUD frames in [`references/`](references/README.md). Lower precedence than the cutscene frames; see [DESIGN.md → Precedence](../DESIGN.md#precedence).
+
+- **Content is Helvetica in sentence case,** including the profiler's labels (`Occupation: Police Corporal`). Uppercase appears on key hints (`ZOOM`, `EXIT`, `NAVIGATE`). Mono is used for app headers, world markers and micro text.
+- **Text sits on blocks sized to each line,** translucent black for facts, solid white for the name and the highlighted fact.
+- **Focus is a dashed white outline** in menus (phone tiles, music list). The current choice and action buttons are cyan.
+- **Cyan marks the flagged and the live:** a `Potential Crime` tag, the flagged person's photo frame, the live path in the hacking puzzle, count badges.
+- **Full-screen views are framed** by a faint rectangle with midpoint ticks (camera) or solid corner triangles and `+` marks (puzzle).
+- **The ctOS logo** in the phone menu is a red block with "CT" beside a white "OS".
+- **Icons** are flat glyphs inside hexagons, diamonds or circles, often in category colours; pixel art is used for DedSec items.
+
+**Implications:** where these disagree with the cutscenes (casing, focus, selection colour, translucency, the logo), the cutscenes win. The HUD fills gaps: viewport marks, key hints, textures, and pixel art as a DedSec trait.
+
 ## The Profiler (content model)
 
 - WD1 shows the target's **name, occupation, income**, one personal fact, and **crime probability**. [W3]

@@ -6,9 +6,14 @@ Outputs:
   <path>  for each design/templates/<path>.tmpl
 
 Templates substitute {{tokenName}} or {{tokenName|format}}. Color formats:
-  hex   #rrggbb / #rrggbbaa (default)
-  bare  rrggbb / rrggbbaa   (e.g. hyprland rgb(...) / rgba(...))
-  rgb   r, g, b             (decimal; alpha dropped)
+  hex     #rrggbb / #rrggbbaa (default)
+  bare    rrggbb / rrggbbaa   (e.g. hyprland rgb(...) / rgba(...))
+  rgb     r, g, b             (decimal; alpha dropped)
+Easing formats (tokens of type "easing", valued with a Qt Easing name such as "OutCubic"):
+  bezier  x1, y1, x2, y2      (cubic-bezier approximation, default; e.g. hyprland bezier, CSS)
+  name    OutCubic            (the Qt name)
+Number formats:
+  ds      milliseconds -> deciseconds (e.g. hyprland animation speed: 300 -> 3)
 
 Usage:
   python3 design/build.py           regenerate everything
@@ -29,6 +34,33 @@ THEME_QML = ROOT / "common" / "Theme.qml"
 REF = re.compile(r"^\{([A-Za-z][A-Za-z0-9]*)\}$")
 HEX = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$")
 PLACEHOLDER = re.compile(r"\{\{\s*([A-Za-z][A-Za-z0-9]*)\s*(?:\|\s*([a-z]+)\s*)?\}\}")
+
+
+# Qt easing curves -> cubic-bezier control points (easings.net approximations).
+BEZIER = {
+    "Linear": (0, 0, 1, 1),
+    "InSine": (0.12, 0, 0.39, 0),
+    "OutSine": (0.61, 1, 0.88, 1),
+    "InOutSine": (0.37, 0, 0.63, 1),
+    "InQuad": (0.11, 0, 0.5, 0),
+    "OutQuad": (0.5, 1, 0.89, 1),
+    "InOutQuad": (0.45, 0, 0.55, 1),
+    "InCubic": (0.32, 0, 0.67, 0),
+    "OutCubic": (0.33, 1, 0.68, 1),
+    "InOutCubic": (0.65, 0, 0.35, 1),
+    "InQuart": (0.5, 0, 0.75, 0),
+    "OutQuart": (0.25, 1, 0.5, 1),
+    "InOutQuart": (0.76, 0, 0.24, 1),
+    "InQuint": (0.64, 0, 0.78, 0),
+    "OutQuint": (0.22, 1, 0.36, 1),
+    "InOutQuint": (0.83, 0, 0.17, 1),
+    "InExpo": (0.7, 0, 0.84, 0),
+    "OutExpo": (0.16, 1, 0.3, 1),
+    "InOutExpo": (0.87, 0, 0.13, 1),
+    "InCirc": (0.55, 0, 1, 0.45),
+    "OutCirc": (0, 0.55, 0.45, 1),
+    "InOutCirc": (0.85, 0, 0.15, 1),
+}
 
 
 class TokenError(Exception):
@@ -54,6 +86,7 @@ def load_tokens():
                 "type": entry.get("type"),
                 "mutable": entry.get("mutable", False),
                 "description": entry.get("description"),
+                "deprecated": entry.get("deprecated"),
                 "section": section,
             }
     return sections, tokens
@@ -83,6 +116,8 @@ def resolve(tokens):
             token["type"] = token["type"] or infer_type(raw)
         if token["type"] == "color":
             token["value"] = normalize_hex(name, token["value"])
+        if token["type"] == "easing" and token["value"] not in BEZIER:
+            raise TokenError(f"token '{name}': unknown easing '{token['value']}' (known: {', '.join(BEZIER)})")
         return token
 
     for name in tokens:
@@ -127,7 +162,12 @@ def qml_literal(token):
         return json.dumps(value)
     if kind == "bool":
         return "true" if value else "false"
+    if kind == "easing":
+        return f"Easing.{value}"
     return repr(value)
+
+
+QML_TYPES = {"easing": "int"}
 
 
 def render_theme(sections, tokens):
@@ -147,20 +187,34 @@ def render_theme(sections, tokens):
         lines += ["", f"    // SECTION {section[:1].upper() + section[1:]}", ""]
         for name in names:
             token = tokens[name]
-            if token["description"]:
+            if token["deprecated"]:
+                lines.append(f"    // DEPRECATED: use {token['deprecated']}")
+            elif token["description"]:
                 lines.append(f"    // {token['description']}")
             qualifier = "property" if token["mutable"] else "readonly property"
             value = token["ref"] if token["ref"] else qml_literal(token)
-            lines.append(f"    {qualifier} {token['type']} {name}: {value}")
+            qml_type = QML_TYPES.get(token["type"], token["type"])
+            lines.append(f"    {qualifier} {qml_type} {name}: {value}")
     lines += ["}", ""]
     return "\n".join(lines)
 
 
 def format_value(token, fmt, where):
     value = token["value"]
+    if token["type"] == "easing":
+        fmt = fmt or "bezier"
+        if fmt == "name":
+            return value
+        if fmt == "bezier":
+            return ", ".join(f"{v:g}" for v in BEZIER[value])
+        raise TokenError(f"{where}: unknown easing format '{fmt}' (use bezier or name)")
+    if fmt == "ds":
+        if token["type"] not in ("int", "real"):
+            raise TokenError(f"{where}: format 'ds' only applies to numbers")
+        return f"{value / 100:g}"
     if token["type"] != "color":
         if fmt:
-            raise TokenError(f"{where}: format '{fmt}' only applies to colors")
+            raise TokenError(f"{where}: format '{fmt}' only applies to colors, easings and numbers (ds)")
         return str(value).lower() if isinstance(value, bool) else str(value)
     fmt = fmt or "hex"
     if fmt == "hex":
@@ -191,6 +245,27 @@ def outputs(sections, tokens):
         yield target, render_template(template, tokens)
 
 
+QML_ROOTS = ("bar", "common", "greeter", "bar.qml", "greeter.qml")
+
+
+def deprecated_usages(tokens):
+    """Yield (path, line number, token, replacement) for each Theme.<deprecated> in QML."""
+    names = {n: t["deprecated"] for n, t in tokens.items() if t["deprecated"]}
+    if not names:
+        return
+    pattern = re.compile(r"\bTheme\.(" + "|".join(names) + r")\b")
+    files = []
+    for root in QML_ROOTS:
+        path = ROOT / root
+        files += [path] if path.is_file() else sorted(path.rglob("*.qml"))
+    for path in files:
+        if path == THEME_QML:
+            continue
+        for number, line in enumerate(path.read_text().splitlines(), 1):
+            for match in pattern.finditer(line):
+                yield path.relative_to(ROOT), number, match.group(1), names[match.group(1)]
+
+
 def main():
     check = "--check" in sys.argv[1:]
     try:
@@ -210,6 +285,12 @@ def main():
         if not check:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content)
+
+    usages = list(deprecated_usages(tokens))
+    for path, number, name, replacement in usages:
+        print(f"[DEPRECATED] {path}:{number} Theme.{name} -> {replacement}", file=sys.stderr)
+    if usages:
+        print(f"[DEPRECATED] {len(usages)} use(s) of deprecated tokens (warning only)", file=sys.stderr)
 
     if check:
         for path in stale:

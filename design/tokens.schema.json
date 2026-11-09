@@ -19,14 +19,18 @@
                     "properties": {
                         "value": { "$ref": "#/$defs/value" },
                         "type": {
-                            "enum": ["color", "int", "real", "string", "bool"],
-                            "description": "Override the inferred QML type"
+                            "enum": ["color", "int", "real", "string", "bool", "easing"],
+                            "description": "Override the inferred type. 'easing' takes a Qt Easing name (\"OutCubic\") and emits Easing.<name>"
                         },
                         "mutable": {
                             "type": "boolean",
                             "description": "Emit a writable property instead of readonly"
                         },
-                        "description": { "type": "string" }
+                        "description": { "type": "string" },
+                        "deprecated": {
+                            "type": "string",
+                            "description": "Token(s) to use instead. Theme.qml marks it and the build warns on every QML use"
+                        }
                     }
                 }
             ]

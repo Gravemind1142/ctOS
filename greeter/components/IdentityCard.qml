@@ -18,7 +18,7 @@ Item {
             text: field.label
             color: Theme.textPrimaryDim
             font {
-                family: Settings.fontFamily
+                family: Theme.fontInsider
                 pixelSize: 14
             }
         }
@@ -28,7 +28,7 @@ Item {
             text: field.value
             color: Theme.textPrimary
             font {
-                family: Settings.fontFamily
+                family: Theme.fontInsider
                 pixelSize: 22
                 weight: 500
             }

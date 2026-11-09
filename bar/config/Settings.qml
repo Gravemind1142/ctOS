@@ -24,8 +24,6 @@ Singleton {
     readonly property GeneralDto general: adapter.general
     readonly property ModulesDto modules: adapter.modules
 
-    readonly property string fontFamily: general.fontFamily || "JetBrainsMono Nerd Font"
-
     readonly property ShellScreen screen: Quickshell.screens.find(s => s.name === general.monitor) ?? Quickshell.screens[0]
 
     readonly property int workspaceCount: Utils.clamp(modules.workspaces.count || 5, 1, 10)

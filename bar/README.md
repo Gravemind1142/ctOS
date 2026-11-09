@@ -33,7 +33,6 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
 {
   "general": {
     /* The typeface used for all bar text */
-    "fontFamily": "JetBrainsMono Nerd Font",
     /* Output to show the bar on (e.g. "eDP-1"), empty uses the first screen */
     "monitor": ""
   },
