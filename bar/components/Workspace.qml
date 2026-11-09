@@ -1,6 +1,8 @@
 import QtQuick
+
 import qs.common
 
+// One workspace cell: corner brackets, with a crosshair when active
 Item {
     id: root
 
@@ -11,25 +13,32 @@ Item {
 
     CornerFrame {
         anchors.centerIn: parent
-        width: parent.height - 6
-        height: parent.height - 6
+        width: parent.height - 2 * Theme.segmentInset
+        height: parent.height - 2 * Theme.segmentInset
     }
 
     Item {
         anchors.centerIn: parent
         opacity: root.active ? 1 : 0
 
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Theme.durationFast
+                easing.type: Theme.easeSnap
+            }
+        }
+
         Rectangle {
-            width: 9
-            height: 1
-            color: Theme.ctosGray
+            width: Theme.crosshairSize
+            height: Theme.strokeHairline
+            color: Theme.frame
             anchors.centerIn: parent
         }
 
         Rectangle {
-            width: 1
-            height: 9
-            color: Theme.ctosGray
+            width: Theme.strokeHairline
+            height: Theme.crosshairSize
+            color: Theme.frame
             anchors.centerIn: parent
         }
     }

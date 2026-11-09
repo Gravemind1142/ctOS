@@ -1,13 +1,16 @@
 import QtQuick
 import QtQuick.Layouts
+
 import qs.common
 
+// Bar segment: an icon and one value inside a corner frame
 Item {
     id: root
-    property string text: "TEXT"
+
+    property string text: ""
 
     height: parent.height
-    width: frame.width + 6
+    width: frame.width + 2 * Theme.segmentInset
 
     default property alias icon: icon.data
 
@@ -15,25 +18,26 @@ Item {
         id: frame
 
         anchors.centerIn: parent
-        height: parent.height - 6
+        height: parent.height - 2 * Theme.segmentInset
 
         RowLayout {
-            id: layout
+            spacing: Theme.spaceSm
 
-            spacing: 5
             Item {
                 id: icon
-                Layout.preferredHeight: text.height - 2 * Units.vh
-                Layout.preferredWidth: text.height - 2 * Units.vh
+                Layout.preferredHeight: Theme.fontSizeMd
+                Layout.preferredWidth: Theme.fontSizeMd
+                Layout.alignment: Qt.AlignVCenter
             }
 
             Text {
-                id: text
                 text: root.text
                 color: Theme.textPrimary
-                font.pixelSize: 16
-                font.family: Theme.fontInsider
-                font.weight: 500
+                font {
+                    family: Theme.fontInsider
+                    pixelSize: Theme.fontSizeMd
+                    weight: Theme.fontWeightMedium
+                }
                 Layout.alignment: Qt.AlignVCenter
             }
         }

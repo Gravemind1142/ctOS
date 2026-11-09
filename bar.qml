@@ -19,7 +19,7 @@ PanelWindow {
     color: Theme.background
     focusable: true
 
-    implicitHeight: 37
+    implicitHeight: Theme.barHeight
 
     anchors {
         top: true
@@ -30,8 +30,8 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         border {
-            width: 1
-            color: Theme.ctosGray
+            width: Theme.strokeHairline
+            color: Theme.frame
         }
         color: "transparent"
     }
@@ -150,11 +150,14 @@ PanelWindow {
                 readonly property UPowerDevice device: UPower.displayDevice
                 readonly property int level: Math.round((device?.percentage ?? 0) * 100)
                 readonly property bool charging: device?.state === UPowerDeviceState.Charging || device?.state === UPowerDeviceState.FullyCharged || device?.state === UPowerDeviceState.PendingCharge
+                readonly property int lowLevel: 20
 
                 name: "BAT"
                 symbol: charging ? "++" : "--"
                 value: level.toString().padStart(3, "0") + "%"
                 percentage: level
+                // level bar: warning when low and draining, success when full
+                fillColor: level >= 100 ? Theme.success : (level < lowLevel && !charging ? Theme.warning : Theme.textPrimary)
 
                 // hidden on desktops, where the display device is not a laptop battery
                 visible: Settings.modules.battery.enabled && !!device?.isLaptopBattery
@@ -180,15 +183,16 @@ PanelWindow {
                     anchors.fill: parent
                     animate: false
 
-                    finalHorizontalOffset: -2
-                    finalVerticalOffset: -2
+                    finalHorizontalOffset: -Theme.space2xs
+                    finalVerticalOffset: -Theme.space2xs
 
-                    individualSize: 2
+                    individualSize: Theme.accentSizeSm
 
+                    // round status dot: green when linked, disabled grey when not
                     Rectangle {
                         anchors.centerIn: parent
-                        color: netSegment.text !== "--N/A--" ? Theme.success : Theme.secondary
-                        height: parent.height * 0.4
+                        color: netSegment.text !== "--N/A--" ? Theme.success : Theme.textDisabled
+                        height: Theme.statusDot
                         radius: height / 2
                         width: height
                     }
@@ -246,14 +250,13 @@ PanelWindow {
                 text: (Settings.modules.user.label || Quickshell.env("USER")).toUpperCase()
                 Text {
                     anchors.centerIn: parent
-                    anchors.verticalCenterOffset: -1
+                    anchors.verticalCenterOffset: -1  // optical nudge: glyph sits low in its line box
 
                     text: "▨"
                     color: Theme.textPrimary
-                    font.pixelSize: 18
+                    font.pixelSize: Theme.fontSizeLg
                     font.family: Theme.fontInsider
-                    font.weight: 600
-                    Layout.alignment: Qt.AlignVCenter
+                    font.weight: Theme.fontWeightBold
                 }
             }
 

@@ -1,66 +1,34 @@
 import QtQuick
 
 import qs.common
+import qs.common.components
 
+// The left end of the bar: the ctOS logo in its own label block, flush with the bar's
+// edges, then the brandmark inset so "OS" sits clear of the bar border
 Row {
     id: root
 
-    Item {
-        id: ct
-        height: parent.height
-        width: 105
+    Rectangle {
+        height: root.height
+        width: root.height
+        color: Theme.labelFill
 
-        Rectangle {
-            color: Theme.ctosGray
-            anchors.fill: parent
-        }
-
-        Image {
-            source: "../resources/distro-arch.svg"
-
-            anchors {
-                verticalCenter: parent.verticalCenter
-                left: parent.left
-                leftMargin: 8
-            }
-
-            height: root.height * 0.8
-            width: root.height * 0.8
-        }
-
-        Text {
-            text: "CT"
-
-            anchors {
-                right: ct.right
-                rightMargin: 2
-                baseline: ct.bottom
-                baselineOffset: -5
-            }
-
-            color: Theme.background
-
-            font {
-                pixelSize: 22
-                family: Theme.fontInsider
-                weight: 500
-            }
+        CtosLogo {
+            anchors.centerIn: parent
+            width: parent.height - 2 * Theme.spaceXs
+            height: width
+            color: Theme.labelText
         }
     }
 
-    Text {
-        anchors {
-            verticalCenter: root.verticalCenter
-        }
+    Item {
+        height: root.height
+        width: brandmark.implicitWidth + 2 * Theme.spaceSm
 
-        color: Theme.ctosGray
-
-        font {
-            family: Theme.fontInsider
-            pixelSize: 36
-            weight: 300
+        Brandmark {
+            id: brandmark
+            anchors.centerIn: parent
+            height: parent.height - 2 * Theme.spaceSm
         }
-        text: "OS"
-        rightPadding: 2
     }
 }

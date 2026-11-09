@@ -4,83 +4,86 @@ import QtQuick.Layouts
 import qs.common
 import qs.bar.components
 
+// Bar segment: uppercase label and symbol, a padded value, and a thin level fill
 Item {
     id: root
 
-    property int percentage: 65
-    property string name: "CPU"
-    property string symbol: "<>"
-    property string value: "65"
+    property int percentage: 0
+    property string name: ""
+    property string symbol: ""
+    property string value: ""
+    // level bars may signal state (warning when low, success when full)
+    property color fillColor: Theme.textPrimary
 
     height: parent.height
-    width: frame.width + 6
+    width: frame.width + 2 * Theme.segmentInset
+
+    component MeterText: Text {
+        color: Theme.textPrimaryDim
+        font {
+            family: Theme.fontInsider
+            pixelSize: Theme.fontSizeXs
+            weight: Theme.fontWeightBold
+            letterSpacing: Theme.trackingLabel
+        }
+    }
 
     CornerFrame {
         id: frame
 
         anchors.centerIn: parent
-        height: parent.height - 6
+        height: parent.height - 2 * Theme.segmentInset
 
         ColumnLayout {
-            id: layout
-
-            y: -2
-            width: 90
-            spacing: 1
+            y: -2  // optical nudge: the fill sits low in the frame otherwise
+            width: Theme.barMeterWidth
+            spacing: Theme.space2xs
 
             RowLayout {
-                id: topRow
-                spacing: 2
+                spacing: Theme.space2xs
 
-                Text {
-                    id: text1
+                MeterText {
                     text: root.name
-                    color: "white"
-                    font.pixelSize: 12
-                    font.weight: 600
-                    font.family: Theme.fontInsider
                 }
 
-                Text {
-                    id: text2
+                MeterText {
                     text: root.symbol
-                    color: "white"
-                    font.pixelSize: 12
-                    font.weight: 600
-                    font.family: Theme.fontInsider
                 }
 
                 Item {
                     Layout.fillWidth: true
                 }
 
-                Text {
-                    id: text3
+                MeterText {
                     text: root.value
-                    color: "white"
-                    font.pixelSize: 12
-                    font.weight: 600
-                    font.family: Theme.fontInsider
+                    color: Theme.textPrimary
+                    font.letterSpacing: Theme.trackingNone
                 }
             }
 
             Rectangle {
-                id: bottomRect
                 Layout.fillWidth: true
-                Layout.preferredHeight: 3
-                color: Theme.secondary
+                Layout.preferredHeight: Theme.trackThickness
+                color: Theme.fillMuted
 
                 Rectangle {
                     anchors.fill: parent
-                    color: Theme.ctosGray
+                    color: root.fillColor
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: Theme.durationFast
+                        }
+                    }
+
                     transform: Scale {
                         origin.x: 0
                         xScale: Utils.clamp(root.percentage, 0, 100) / 100
 
                         Behavior on xScale {
                             NumberAnimation {
-                                duration: 1000
-                                easing.type: Easing.InOutSine
+                                duration: Theme.durationMeter
+                                easing.type: Theme.easeMove
                             }
                         }
                     }

@@ -1,13 +1,16 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 
+import qs.common
+
+// Motif 2: four corner brackets around a row of content
 Item {
     id: root
 
-    property color accentColor: "white"
-    property int thickness: 1
-    property int armLength: 7
-    property int horizontalMargin: 4
+    property color accentColor: Theme.frame
+    property int thickness: Theme.strokeHairline
+    property int armLength: Theme.cornerArm
+    property int horizontalMargin: Theme.spaceXs
 
     implicitWidth: container.width + 2 * armLength + 2 * horizontalMargin
     width: implicitWidth
@@ -20,7 +23,7 @@ Item {
     Row {
         id: container
         x: root.armLength + root.horizontalMargin
-        y: root.armLength - 2  // visual fix
+        y: root.armLength - 2  // optical nudge: centre mono text between the brackets
     }
 
     component Corner: Item {
@@ -44,30 +47,24 @@ Item {
         }
     }
 
-    property int count: 2
-
     Corner {
-        id: topLeft
         anchors.top: parent.top
         anchors.left: parent.left
     }
 
     Corner {
-        id: topRight
         anchors.top: parent.top
         anchors.right: parent.right
         rotation: 90
     }
 
     Corner {
-        id: bottomRight
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         rotation: 180
     }
 
     Corner {
-        id: bottomLeft
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         rotation: 270

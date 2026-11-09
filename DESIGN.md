@@ -85,7 +85,7 @@ When sources disagree, the higher one wins:
 
 **Practicality** can override 2–6 for a specific rule, and the rule says so where it does.
 
-Known conflicts settled this way: the HUD sets content in sentence case, shows focus as a dashed outline, marks selection in cyan, puts text on translucent blocks and has a red ctOS logo. The cutscenes' uppercase labels, cyan ring, opaque panels and white cell wordmark win.
+Known conflicts settled this way: the HUD sets content in sentence case, shows focus as a dashed outline, marks selection in cyan, puts text on translucent blocks and has a red ctOS logo. The cutscenes' uppercase labels, cyan ring and opaque panels win, and the brandmark is the official white ctOS lockup (`design/references/ctOS.webp`), not the HUD's red one.
 
 ### Primary: ctOS in Watch Dogs (2014)
 
@@ -320,7 +320,7 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 
 ### Dimensions
 
-- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Segments sit `segmentInset` (3px) inside it, framed by corner brackets and separated by `Divider`s.
+- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Segments sit `segmentInset` (3px) inside it, framed by corner brackets and separated by `Divider`s (`frameSubtle`). Meters are `barMeterWidth` (90px) wide. The left end is the ctOS logo in `labelText` on its own square `labelFill` block, flush with the bar's edges, then the `Brandmark` (public voice) inset `spaceSm` on every side so the `OS` sits clear of the border.
 - **Panels** follow the reference's grid: framed rectangles that tile edge to edge with a `spaceMd`–`spaceLg` gutter, sub-panels nested inside a parent frame.
 
 ## Shape
@@ -335,6 +335,9 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 | `cornerArm` | 7 | Length of one corner-bracket arm |
 | `accentSize` | 4 | Greeter accent squares |
 | `labelShadow` | 2 | Hard offset shadow under stacked tags |
+| `accentSizeSm` | 2 | Accent squares around a small bar icon |
+| `crosshairSize` | 9 | Active-workspace crosshair |
+| `statusDot` | 6 | Round status dot on a badge or bar icon |
 
 ### Motifs
 
@@ -347,7 +350,7 @@ From the reference frames, in the order you should reach for them:
 5. **Hack marker.** An inverted outline triangle in `focus` at `strokeMarker`, attached to a label block. Marks the one thing being acted on.
 6. **Network line.** A `strokeHairline` line in `networkLine` with small square nodes in `networkNode` spaced along it; dotted for routes. For connections and progress through a sequence.
 7. **Dashed rule.** A dashed `frameSubtle` (or `textSecondary`) line between rows of dense data.
-8. **Cell wordmark.** The dossier sets `ctOS` with each letter in its own outlined cell. Use it for the wordmark only.
+8. **Brandmark.** The official ctOS lockup (`Brandmark`): a wide `labelFill` block with a small regular `CT` in its bottom-right corner, then a bold `OS` whose letters (overshoot included) match the block's height, sitting on its baseline (the reference sets `OS` ~6% taller; we match them). `fontPublic`. Proportions are measured from [`ctOS.webp`](design/references/ctOS.webp) and fixed in the component. The dossier's variant, each letter of `ctOS` in its own outlined cell, is for a wordmark inside a panel header.
 9. **Viewport marks.** For full-screen surfaces (lock screen, screenshot selection, splash): a faint full-screen frame with short ticks crossing it at the middle of each edge, solid right-angle triangles in the corners, and `+` marks at the edge midpoints and centre. From the HUD's camera and hacking views.
 10. **Key hint.** A black block holding a key cap (the key's name in a small `strokeHairline` square) followed by the action in uppercase: `[B] EXIT`. For keybind hints, OSD and the cheatsheet. From the HUD.
 11. **Texture.** A checkerboard dither or diagonal hatch in `frameSubtle` behind a card, to set it apart from what's under it. Static, and sparingly. From the HUD's profiler and conversation cards.
@@ -527,7 +530,8 @@ Disabled anything: text `textDisabled`, borders `frameSubtle`, no hover.
 - **Badges:** an icon in a round dark badge, with a small round status dot overlapping its lower-left edge (`secured`, `error`, `success`). From the phone's network list.
 - **Glyphs:** the insider voice can use Nerd Font glyphs and box-drawing characters. Prefer text (`<>`, `++`, `--`) where ctOS would.
 - **SVG conventions:** square viewBox on a whole-pixel grid, shapes aligned to that grid so they stay sharp at fractional scaling, fill `#ffffff` so QML can recolour them.
-- **Where assets live:** next to the module that uses them: `bar/resources/`, `greeter/resources/`. Promote an asset to a shared location once a second module needs it.
+- **Where assets live:** next to the module that uses them: `bar/resources/`, `greeter/resources/`. Promote an asset to `common/resources/` once a second module needs it.
+- **Logos:** `common/resources/ctos-logo.svg` (the diamond from the wallpaper) and `common/resources/blume-logo.svg` (the hexagon of cubes), white on a 48px grid, for anything outside QML (boot, wallpapers, fastfetch). QML can't recolour an SVG without QtQuick.Effects, so QML draws them with `CtosLogo` and `BlumeLogo`, which hold the same paths.
 
 ## Components
 
@@ -536,13 +540,16 @@ Reuse these before writing new ones. Shared ones go in `common/components`.
 | Component | Where | Use it for |
 | --- | --- | --- |
 | `Accents` | common | Corner squares that slide onto something to mark it acquired/focused |
+| `Brandmark` | common | The official ctOS lockup, scaled from its height (motif 8) |
+| `CtosLogo` | common | The ctOS logo (a diamond wired to a solid square core) as a shape, in any colour |
+| `BlumeLogo` | common | The Blume logo (a hexagon of three isometric cubes) as a shape, in any colour |
 | `CornerFrame` | bar | Corner-bracket frame around a row of content (motif 2) |
 | `Divider` | bar | 1px vertical rule between bar segments |
 | `SimpleSegment` | bar | Bar segment: icon + one value inside a `CornerFrame` |
-| `Meter` | bar | Bar segment: label, symbol, value and a thin fill (CPU, RAM, battery) |
+| `Meter` | bar | Bar segment: label, symbol, value and a thin level fill (CPU, RAM, battery); `fillColor` for level-bar states |
 | `Status` | bar | Clock/date and audio levels |
 | `ScrollableValue` | bar | A padded number that scrolls to change and clicks to mute |
-| `SystemLabel` | bar | The distro/ctOS block at the left of the bar |
+| `SystemLabel` | bar | The ctOS logo block and the brandmark, at the left of the bar |
 | `Workspace` / `Workspaces` | bar | Workspace cells; the active one gets a crosshair |
 | `Surface` | greeter | A framed panel with an animated side bar |
 | `IdentityCard` | greeter | The profiler pattern: name and labelled facts |

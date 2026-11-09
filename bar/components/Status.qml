@@ -11,13 +11,13 @@ Item {
     id: root
 
     readonly property font textFont: Qt.font({
-        pixelSize: 16,
+        pixelSize: Theme.fontSizeMd,
         family: Theme.fontInsider,
-        weight: 500
+        weight: Theme.fontWeightMedium
     })
 
     height: parent.height
-    width: frame.width + 6
+    width: frame.width + 2 * Theme.segmentInset
 
     PwObjectTracker {
         objects: [Pipewire.defaultAudioSink, Pipewire.defaultAudioSource]
@@ -27,7 +27,7 @@ Item {
         id: frame
 
         anchors.centerIn: parent
-        height: parent.height - 6
+        height: parent.height - 2 * Theme.segmentInset
 
         RowLayout {
             id: layout

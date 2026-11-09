@@ -155,6 +155,8 @@ Singleton {
     readonly property int barHeight: 37
     // Gap between a bar segment's corner frame and the bar edge
     readonly property int segmentInset: 3
+    // Content width of a bar meter (label, value and fill)
+    readonly property int barMeterWidth: 90
 
     // SECTION Shape
 
@@ -170,6 +172,12 @@ Singleton {
     readonly property int cornerArm: 7
     // Size of a greeter accent square
     readonly property int accentSize: 4
+    // Accent squares around a small bar icon
+    readonly property int accentSizeSm: 2
+    // Active-workspace crosshair
+    readonly property int crosshairSize: 9
+    // Round status dot on a badge or bar icon
+    readonly property int statusDot: 6
     // Hard offset shadow under stacked tags
     readonly property int labelShadow: 2
 

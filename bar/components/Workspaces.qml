@@ -9,7 +9,6 @@ Row {
     property int count: 5
     property int selectedIndex: WorkspaceManager.selectedWorkspaceId - 1  // workspace 1-based index
 
-    width: parent.height * count + (count - 1)
     height: parent.height
 
     Repeater {
@@ -19,8 +18,8 @@ Row {
             required property int index
 
             height: parent.height
+
             Workspace {
-                id: workspace
                 active: parent.index === root.selectedIndex
             }
 

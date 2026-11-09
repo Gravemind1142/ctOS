@@ -28,9 +28,10 @@ Item {
             font: root.textFont
         }
 
+        // hover steps the text up a level, muted reads as disabled; no colour change
         Text {
             text: root.suppressed ? "000" : root.value.toString().padStart(3, '0')
-            color: mouseArea.hovered ? Theme.success : Theme.textSecondary
+            color: root.suppressed ? Theme.textDisabled : mouseArea.hovered ? Theme.textPrimary : Theme.textSecondary
             font: root.textFont
         }
     }

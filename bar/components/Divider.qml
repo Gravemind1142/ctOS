@@ -1,16 +1,15 @@
 import QtQuick
-import Quickshell
 
 import qs.common
 
+// 1px vertical rule between bar segments, inside the bar's border
 Rectangle {
     anchors {
-        // accounting for 1 pixel border on bar
         top: parent.top
-        topMargin: 1
+        topMargin: Theme.strokeHairline
         bottom: parent.bottom
-        bottomMargin: 1
+        bottomMargin: Theme.strokeHairline
     }
-    width: 1
-    color: Theme.secondary
+    width: Theme.strokeHairline
+    color: Theme.frameSubtle
 }
