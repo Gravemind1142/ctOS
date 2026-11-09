@@ -220,11 +220,18 @@ function install_greeter_compositor_config() {
 function sync_project_files() {
   sudo mkdir -p "$INSTALL_DIR"
 
+  # --delay-updates swaps every file in at the end, so a running bar that hot-reloads mid-sync
+  # never sees a half-copied tree (a component whose new dependency hasn't landed yet)
   sudo rsync -ahq \
+    --delay-updates \
     --exclude=".git" \
     --exclude=".assets" \
     --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
     "$SCRIPT_DIR/" "$INSTALL_DIR"
+
+  # Quickshell only watches files it already loaded: touch the entry points so a running bar or
+  # greeter reloads once more with the complete tree, picking up any newly added components
+  sudo touch "$INSTALL_DIR/bar.qml" "$INSTALL_DIR/greeter.qml"
 
   if [[ "$FRESH_INSTALL" -eq 1 ]]; then
     echo "[ITEM]   added: $INSTALL_DIR"
@@ -326,7 +333,7 @@ function generate_hyprland_snippet() {
 
   if command -v nmtui >/dev/null && command -v kitty >/dev/null; then
     echo
-    echo "# network manager, opened by clicking the bar's network segment or SUPER+N"
+    echo "# full network manager: SUPER+N, or ADVANCED in the bar's network menu"
     echo "bind = SUPER, N, exec, kitty --class ctos-network -e nmtui"
     echo "windowrule {"
     echo "    name = ctos-network"
