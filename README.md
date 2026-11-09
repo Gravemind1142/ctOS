@@ -45,6 +45,17 @@ The terminal theme is **[Monoglow](https://github.com/wnkz/monoglow.nvim)** them
 
 Minimal config, featuring a custom **DeadSec** ASCII logo.
 
+### [Hyprland Session](extras/.config/hypr)
+
+Wallpaper ([hyprpaper](https://github.com/hyprwm/hyprpaper)) and idle lock ([hypridle](https://github.com/hyprwm/hypridle)) configs. The idle lock (and `SUPER+L`) opens the greeter in lockscreen mode.
+
+### Installing
+
+The [install script](install.sh) offers to set these up after the main install. Every step asks first, and existing configs are never overwritten.
+
+- **Hyprland session**: writes `~/.config/hypr/ctos.conf` (bar, wallpaper, idle lock, polkit agent autostart) and adds a `source` line to your `hyprland.conf`, after backing it up. Log into Hyprland once before running it so Hyprland can generate its default config.
+- **Terminal extras**: symlinks the kitty and fastfetch configs into `~/.config`.
+
 <br>
 
 ## Future Plans

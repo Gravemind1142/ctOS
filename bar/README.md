@@ -10,9 +10,15 @@ To use the bar, you must have the following core components installed on your sy
 
 ### 1. Run [Install Script](/install.sh)
 
+On Hyprland, accept the optional **Hyprland session** step to start the bar on login (see [Extras](/README.md#installing)).
+
 ### 2. Run Quickshell
+
+To run it manually or from another compositor's autostart:
 
 ```bash
 # Set rounding policy to prevent anti-aliasing artifacts on fractional scales
 QT_SCALE_FACTOR_ROUNDING_POLICY=Round qs --path /opt/ctos/bar.qml
 ```
+
+> _Note_: Workspaces currently only support Hyprland.
