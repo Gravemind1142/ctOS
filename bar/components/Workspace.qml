@@ -2,7 +2,7 @@ import QtQuick
 
 import qs.common
 
-// One workspace cell: corner brackets, with a crosshair when active
+// One workspace cell. The active one is locked on: brackets settle in around a crosshair.
 Item {
     id: root
 
@@ -15,6 +15,7 @@ Item {
         anchors.centerIn: parent
         width: parent.height - 2 * Theme.segmentInset
         height: parent.height - 2 * Theme.segmentInset
+        marked: root.active
     }
 
     Item {

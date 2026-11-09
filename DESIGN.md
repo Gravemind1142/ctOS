@@ -320,7 +320,7 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 
 ### Dimensions
 
-- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Segments sit `segmentInset` (3px) inside it, framed by corner brackets and separated by `Divider`s (`frameSubtle`). Meters are `barMeterWidth` (90px) wide. The left end is the ctOS logo in `labelText` on its own square `labelFill` block, flush with the bar's edges, then the `Brandmark` (public voice) inset `spaceSm` on every side so the `OS` sits clear of the border.
+- **Bar:** `barHeight` 37px, with a `strokeHairline` border in `frame`. Like the map dashboard's tiled panels, the bar is one frame divided into cells: segments sit `segmentInset` (3px) inside it, separated by `Divider`s (`frameSubtle`), with no frame of their own. Meters are `barMeterWidth` (90px) wide. Clickable segments (network, audio) follow the control states: on hover the brackets settle in around a `surfaceRaised` fill, on press an inverted block for one `durationFast`. The active workspace gets brackets and the crosshair; the others are empty cells. The network segment shows no colour while linked; offline it reads `OFFLINE` in `textSecondary` with an `error` status dot. The left end is the ctOS logo in `labelText` on its own square `labelFill` block, flush with the bar's edges, then the `Brandmark` (public voice) inset `spaceSm` on every side so the `OS` sits clear of the border.
 - **Panels** follow the reference's grid: framed rectangles that tile edge to edge with a `spaceMd`–`spaceLg` gutter, sub-panels nested inside a parent frame.
 
 ## Shape
@@ -344,7 +344,7 @@ Weights: `fontWeightLight` 300 (display sizes only), `fontWeightRegular` 400, `f
 From the reference frames, in the order you should reach for them:
 
 1. **Full frame.** A `strokeFrame` outline in `frame` around a black panel. The default container: windows, popups, panels. A window gets a tiny uppercase title strip (`NEW WINDOW`).
-2. **Corner brackets.** Four `cornerArm` L-shapes instead of a full outline (`CornerFrame`). For small, repeated items (bar segments, workspaces) where full outlines would get busy, and for camera-style viewports.
+2. **Corner brackets.** Four `cornerArm` L-shapes (`CornerFrame`). A **state, not a container**: they mark the one thing that is targeted (the active workspace, a hovered control), settling in from just outside at `durationFast`, like a camera locking on. Structure comes from frames and rules, so brackets never sit on items at rest. Also for camera-style viewports. _(Practicality: no reference shows brackets on individual items; the HUD frames whole screens with corner marks.)_
 3. **Label block.** Solid `labelFill` with black uppercase text, flush against the content it names (`SMART PHONE`, `INSURANCE`). A label sits *on* the frame's edge or just above it, not floating inside.
 4. **Tag stack.** Full-width filled bars, stacked with a `labelShadow` hard black offset, each a category (`infoFill`, `errorFill`, `labelFill`). For lists of categories and alerts.
 5. **Hack marker.** An inverted outline triangle in `focus` at `strokeMarker`, attached to a label block. Marks the one thing being acted on.
@@ -543,14 +543,16 @@ Reuse these before writing new ones. Shared ones go in `common/components`.
 | `Brandmark` | common | The official ctOS lockup, scaled from its height (motif 8) |
 | `CtosLogo` | common | The ctOS logo (a diamond wired to a solid square core) as a shape, in any colour |
 | `BlumeLogo` | common | The Blume logo (a hexagon of three isometric cubes) as a shape, in any colour |
-| `CornerFrame` | bar | Corner-bracket frame around a row of content (motif 2) |
+| `CornerFrame` | bar | Corner brackets around a row of content (motif 2), shown while `marked`; optional state fill |
 | `Divider` | bar | 1px vertical rule between bar segments |
-| `SimpleSegment` | bar | Bar segment: icon + one value inside a `CornerFrame` |
-| `Meter` | bar | Bar segment: label, symbol, value and a thin level fill (CPU, RAM, battery); `fillColor` for level-bar states |
-| `Status` | bar | Clock/date and audio levels |
-| `ScrollableValue` | bar | A padded number that scrolls to change and clicks to mute |
+| `Segment` | bar | Shell for every bar segment: an inset `CornerFrame` whose brackets show while `marked` (hover by default), and with `interactive` the hover/pressed states plus `clicked`/`scrolled` signals. Content colours itself from `inkColor`/`labelColor` |
+| `SimpleSegment` | bar | Bar segment: icon + one value; `live: false` steps the value down to `textSecondary` |
+| `Meter` | bar | Bar segment: label, symbol, value and a thin level fill (CPU, RAM, battery); `fillColor` for level-bar states, `muted` for disabled |
+| `AudioMeter` | bar | `Meter` on a Pipewire node: scroll for volume, click to mute |
+| `Clock` | bar | Date, time and zone as one ruled readout (`091126-0330-PST`), time bright, the rest dim |
+| `SignalIcon` | bar | The phone's network glyph; dims and takes an `error` status dot without a link |
 | `SystemLabel` | bar | The ctOS logo block and the brandmark, at the left of the bar |
-| `Workspace` / `Workspaces` | bar | Workspace cells; the active one gets a crosshair |
+| `Workspace` / `Workspaces` | bar | Workspace cells; the active one gets brackets and a crosshair |
 | `Surface` | greeter | A framed panel with an animated side bar |
 | `IdentityCard` | greeter | The profiler pattern: name and labelled facts |
 | `FieldGroup` / `PasswordField` | greeter | Labelled input with a block cursor and masked characters |

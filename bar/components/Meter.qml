@@ -4,8 +4,9 @@ import QtQuick.Layouts
 import qs.common
 import qs.bar.components
 
-// Bar segment: uppercase label and symbol, a padded value, and a thin level fill
-Item {
+// Bar segment: uppercase label and symbol, a padded value, and a thin level fill.
+// Profiler pattern: the label in textPrimaryDim, the value in textPrimary.
+Segment {
     id: root
 
     property int percentage: 0
@@ -14,12 +15,11 @@ Item {
     property string value: ""
     // level bars may signal state (warning when low, success when full)
     property color fillColor: Theme.textPrimary
-
-    height: parent.height
-    width: frame.width + 2 * Theme.segmentInset
+    // switched off (a muted source): value and fill read as disabled
+    property bool muted: false
 
     component MeterText: Text {
-        color: Theme.textPrimaryDim
+        color: root.labelColor
         font {
             family: Theme.fontInsider
             pixelSize: Theme.fontSizeXs
@@ -28,63 +28,50 @@ Item {
         }
     }
 
-    CornerFrame {
-        id: frame
+    ColumnLayout {
+        y: -2  // optical nudge: the fill sits low in the frame otherwise
+        width: Theme.barMeterWidth
+        spacing: Theme.space2xs
 
-        anchors.centerIn: parent
-        height: parent.height - 2 * Theme.segmentInset
-
-        ColumnLayout {
-            y: -2  // optical nudge: the fill sits low in the frame otherwise
-            width: Theme.barMeterWidth
+        RowLayout {
             spacing: Theme.space2xs
 
-            RowLayout {
-                spacing: Theme.space2xs
-
-                MeterText {
-                    text: root.name
-                }
-
-                MeterText {
-                    text: root.symbol
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                MeterText {
-                    text: root.value
-                    color: Theme.textPrimary
-                    font.letterSpacing: Theme.trackingNone
-                }
+            MeterText {
+                text: root.name
             }
 
-            Rectangle {
+            MeterText {
+                text: root.symbol
+            }
+
+            Item {
                 Layout.fillWidth: true
-                Layout.preferredHeight: Theme.trackThickness
-                color: Theme.fillMuted
+            }
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: root.fillColor
+            MeterText {
+                text: root.value
+                color: root.pressed ? Theme.labelText : root.muted ? Theme.textDisabled : Theme.textPrimary
+                font.letterSpacing: Theme.trackingNone
+            }
+        }
 
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: Theme.durationFast
-                        }
-                    }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: Theme.trackThickness
+            color: Theme.fillMuted
 
-                    transform: Scale {
-                        origin.x: 0
-                        xScale: Utils.clamp(root.percentage, 0, 100) / 100
+            Rectangle {
+                anchors.fill: parent
+                color: root.pressed ? Theme.labelText : root.muted ? Theme.textDisabled : root.fillColor
 
-                        Behavior on xScale {
-                            NumberAnimation {
-                                duration: Theme.durationMeter
-                                easing.type: Theme.easeMove
-                            }
+                transform: Scale {
+                    origin.x: 0
+                    xScale: Utils.clamp(root.percentage, 0, 100) / 100
+
+                    Behavior on xScale {
+                        NumberAnimation {
+                            duration: Theme.durationMeter
+                            easing.type: Theme.easeMove
                         }
                     }
                 }

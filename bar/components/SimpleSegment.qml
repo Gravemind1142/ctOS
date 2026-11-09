@@ -2,44 +2,38 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.common
+import qs.bar.components
 
-// Bar segment: an icon and one value inside a corner frame
-Item {
+// Bar segment: an icon and one value inside corner brackets
+Segment {
     id: root
 
     property string text: ""
+    // false for an inactive value (no link): steps the text down to textSecondary
+    property bool live: true
 
-    height: parent.height
-    width: frame.width + 2 * Theme.segmentInset
+    // the icon (`icon: SomeItem {}`); colour it from inkColor so it inverts when pressed
+    property alias icon: icon.data
 
-    default property alias icon: icon.data
+    RowLayout {
+        spacing: Theme.spaceSm
 
-    CornerFrame {
-        id: frame
+        Item {
+            id: icon
+            Layout.preferredHeight: Theme.fontSizeMd
+            Layout.preferredWidth: Theme.fontSizeMd
+            Layout.alignment: Qt.AlignVCenter
+        }
 
-        anchors.centerIn: parent
-        height: parent.height - 2 * Theme.segmentInset
-
-        RowLayout {
-            spacing: Theme.spaceSm
-
-            Item {
-                id: icon
-                Layout.preferredHeight: Theme.fontSizeMd
-                Layout.preferredWidth: Theme.fontSizeMd
-                Layout.alignment: Qt.AlignVCenter
+        Text {
+            text: root.text
+            color: root.live || root.pressed ? root.inkColor : root.hovered ? Theme.textPrimary : Theme.textSecondary
+            font {
+                family: Theme.fontInsider
+                pixelSize: Theme.fontSizeMd
+                weight: Theme.fontWeightMedium
             }
-
-            Text {
-                text: root.text
-                color: Theme.textPrimary
-                font {
-                    family: Theme.fontInsider
-                    pixelSize: Theme.fontSizeMd
-                    weight: Theme.fontWeightMedium
-                }
-                Layout.alignment: Qt.AlignVCenter
-            }
+            Layout.alignment: Qt.AlignVCenter
         }
     }
 }

@@ -1,6 +1,7 @@
 import Quickshell
 import Quickshell.Io
 import Quickshell.Networking
+import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
@@ -175,31 +176,25 @@ PanelWindow {
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignRight
 
+            // mirrors the rule after the last left-hand segment
+            Divider {
+                visible: netSegment.visible
+            }
+
             SimpleSegment {
                 id: netSegment
+
+                readonly property bool linked: text !== "OFFLINE"
+
                 visible: Settings.modules.network.enabled
-                Accents {
+                interactive: true
+                live: linked
+                onClicked: Quickshell.execDetached(["sh", "-c", Settings.modules.network.command])
 
+                icon: SignalIcon {
                     anchors.fill: parent
-                    animate: false
-
-                    finalHorizontalOffset: -Theme.space2xs
-                    finalVerticalOffset: -Theme.space2xs
-
-                    individualSize: Theme.accentSizeSm
-
-                    // round status dot: green when linked, disabled grey when not
-                    Rectangle {
-                        anchors.centerIn: parent
-                        color: netSegment.text !== "--N/A--" ? Theme.success : Theme.textDisabled
-                        height: Theme.statusDot
-                        radius: height / 2
-                        width: height
-                    }
-                }
-
-                TapHandler {
-                    onTapped: Quickshell.execDetached(["sh", "-c", Settings.modules.network.command])
+                    linked: netSegment.linked
+                    color: netSegment.inkColor
                 }
 
                 text: {
@@ -236,24 +231,25 @@ PanelWindow {
                         return ssid;
                     }
 
-                    return "--N/A--";
+                    return "OFFLINE";
                 }
             }
 
             Divider {
-                visible: netSegment.visible && (userSegment.visible || statusSegment.visible)
+                visible: netSegment.visible && (userSegment.visible || Settings.modules.status.enabled)
             }
 
             SimpleSegment {
                 id: userSegment
                 visible: Settings.modules.user.enabled
                 text: (Settings.modules.user.label || Quickshell.env("USER")).toUpperCase()
-                Text {
+
+                icon: Text {
                     anchors.centerIn: parent
                     anchors.verticalCenterOffset: -1  // optical nudge: glyph sits low in its line box
 
                     text: "▨"
-                    color: Theme.textPrimary
+                    color: userSegment.inkColor
                     font.pixelSize: Theme.fontSizeLg
                     font.family: Theme.fontInsider
                     font.weight: Theme.fontWeightBold
@@ -261,12 +257,34 @@ PanelWindow {
             }
 
             Divider {
-                visible: userSegment.visible && statusSegment.visible
+                visible: userSegment.visible && Settings.modules.status.enabled
             }
 
-            Status {
-                id: statusSegment
+            Clock {
                 visible: Settings.modules.status.enabled
+                zone: Settings.modules.status.timezone
+            }
+
+            Divider {
+                visible: Settings.modules.status.enabled
+            }
+
+            AudioMeter {
+                visible: Settings.modules.status.enabled
+                name: "MIC"
+                liveSymbol: "()"
+                node: Pipewire.defaultAudioSource
+            }
+
+            Divider {
+                visible: Settings.modules.status.enabled
+            }
+
+            AudioMeter {
+                visible: Settings.modules.status.enabled
+                name: "VOL"
+                liveSymbol: "))"
+                node: Pipewire.defaultAudioSink
             }
         }
     }
