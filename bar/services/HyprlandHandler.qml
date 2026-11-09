@@ -5,5 +5,6 @@ import Quickshell
 import Quickshell.Hyprland
 
 Singleton {
-    property int selectedWorkspaceId: Hyprland.focusedWorkspace.id
+    // focusedWorkspace is null until Hyprland reports one; fall back to the first workspace
+    property int selectedWorkspaceId: Hyprland.focusedWorkspace?.id ?? 1
 }
