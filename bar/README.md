@@ -40,8 +40,11 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
   "modules": {
     /* Every module can be hidden with "enabled": false */
     "workspaces": { "enabled": true, "count": 5 }, // 1-10 workspace boxes
-    "cpu": { "enabled": true, "interval": 2 }, // seconds between samples
-    "memory": { "enabled": true, "interval": 1 },
+    /* Seconds between samples. The symbol turns to a warning "!!" while a process holds more than
+       "threshold" percent of one core for two samples in a row (CPU), or of physical memory (MEM).
+       Click either meter for its heaviest processes */
+    "cpu": { "enabled": true, "interval": 2, "threshold": 80 },
+    "memory": { "enabled": true, "interval": 1, "threshold": 20 },
     /* Hidden automatically on machines without a battery. Click it for battery details and the power profile (needs power-profiles-daemon) */
     "battery": { "enabled": true },
     /* Click the segment for the network menu. Command run by the menu's ADVANCED action (and for enterprise networks) */

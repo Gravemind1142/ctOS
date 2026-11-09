@@ -17,6 +17,8 @@ Segment {
     property color fillColor: Theme.textPrimary
     // switched off (a muted source): value and fill read as disabled
     property bool muted: false
+    // something behind the value needs attention: the symbol turns to `!!` in warning
+    property bool flagged: false
 
     component MeterText: Text {
         color: root.labelColor
@@ -41,7 +43,8 @@ Segment {
             }
 
             MeterText {
-                text: root.symbol
+                text: root.flagged ? "!!" : root.symbol
+                color: root.flagged && !root.pressed ? Theme.warning : root.labelColor
             }
 
             Item {

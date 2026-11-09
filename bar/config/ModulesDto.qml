@@ -13,6 +13,16 @@ JsonObject {
         property real interval: 2
     }
 
+    component CpuDto: PollingDto {
+        // a process over this share of one core for two samples in a row is flagged
+        property real threshold: 80
+    }
+
+    component MemoryDto: PollingDto {
+        // a process holding this share of physical memory is flagged
+        property real threshold: 20
+    }
+
     component NetworkDto: JsonObject {
         property bool enabled: true
         // run by the network menu's ADVANCED action, and for enterprise (EAP) networks
@@ -46,8 +56,8 @@ JsonObject {
     }
 
     property WorkspacesDto workspaces: WorkspacesDto {}
-    property PollingDto cpu: PollingDto {}
-    property PollingDto memory: PollingDto {
+    property CpuDto cpu: CpuDto {}
+    property MemoryDto memory: MemoryDto {
         interval: 1
     }
     property BatteryDto battery: BatteryDto {}
