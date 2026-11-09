@@ -52,7 +52,7 @@ Item {
                 font {
                     pixelSize: 48
                     weight: 100
-                    family: Settings.fontFamily
+                    family: Theme.fontInsider
                 }
 
                 transform: Translate {
@@ -92,7 +92,7 @@ Item {
                     text: Qt.formatDateTime(clock.date, "dddd dd MMMM")
                     font {
                         pixelSize: 14
-                        family: Settings.fontFamily
+                        family: Theme.fontInsider
                         weight: 300
                     }
                 }

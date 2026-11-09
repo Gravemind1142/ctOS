@@ -115,7 +115,6 @@ Configuration will be installed in `/etc/ctos`. The example file below will be i
   "region": "US-LOS-ANGELES",
 
   /* The typeface used for the terminal-style interface elements */
-  "fontFamily": "JetBrainsMono Nerd Font",
 
   /* Cosmetic 'Identity Card' data displayed in the post-login sequence */
   "fakeIdentity": {

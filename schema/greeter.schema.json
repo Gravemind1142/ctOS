@@ -18,10 +18,6 @@
       "$ref": "#/$defs/animationProfile",
       "Title": "Default Animation Profile"
     },
-    "fontFamily": {
-      "type": "string",
-      "description": "The monospace font to use."
-    },
     "fakeIdentity": {
       "title": "Fake Identity",
       "type": "object",

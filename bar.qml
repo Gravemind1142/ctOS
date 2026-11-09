@@ -19,12 +19,6 @@ PanelWindow {
     color: Theme.background
     focusable: true
 
-    Binding {
-        target: Theme
-        property: "fontInsider"
-        value: Settings.fontFamily
-    }
-
     implicitHeight: 37
 
     anchors {

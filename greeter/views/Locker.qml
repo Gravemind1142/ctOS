@@ -1,6 +1,7 @@
 import Quickshell.Wayland
 import QtQuick
 
+import qs.common
 import qs.greeter.services
 import qs.greeter.config
 import qs.greeter.components
@@ -15,7 +16,7 @@ WlSessionLock {
 
         Rectangle {
             anchors.fill: parent
-            color: "#ff0e0e0e"
+            color: Theme.background
         }
 
         Loader {

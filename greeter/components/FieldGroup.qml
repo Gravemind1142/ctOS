@@ -40,7 +40,7 @@ ColumnLayout {
 
             font {
                 pixelSize: 14
-                family: Settings.fontFamily
+                family: Theme.fontInsider
             }
         }
     }
@@ -112,7 +112,7 @@ ColumnLayout {
             color: Theme.textPrimaryDim
             font {
                 pixelSize: 14
-                family: Settings.fontFamily
+                family: Theme.fontInsider
                 weight: 500
             }
             opacity: 0
@@ -131,7 +131,7 @@ ColumnLayout {
             color: Theme.textPrimaryDimmer
             font {
                 pixelSize: 14
-                family: Settings.fontFamily
+                family: Theme.fontInsider
             }
             opacity: 0
         }
@@ -185,7 +185,7 @@ ColumnLayout {
 
             font {
                 pixelSize: 16
-                family: Settings.fontFamily
+                family: Theme.fontInsider
             }
         }
 

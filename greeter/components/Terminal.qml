@@ -28,7 +28,7 @@ ColumnLayout {
     property alias rem: textMetrics.width
 
     readonly property font font: Qt.font({
-        family: Settings.fontFamily,
+        family: Theme.fontInsider,
         pixelSize: terminal.fontSize
     })
 
@@ -277,7 +277,7 @@ ColumnLayout {
 
                 font {
                     pixelSize: 13 * Units.vh
-                    family: Settings.fontFamily
+                    family: Theme.fontInsider
                 }
 
                 text: "blume-krn-1.0.8 <> ctOS-1.0.0-a"

@@ -33,7 +33,7 @@ RowLayout {
             color: Theme.ctosGray
             font {
                 pixelSize: 11
-                family: Settings.fontFamily
+                family: Theme.fontInsider
             }
             fontSizeMode: Text.Fit
             text: disclaimer.lineOneText.substring(0, disclaimer.lineOneCharsShown)
@@ -47,7 +47,7 @@ RowLayout {
 
             font {
                 pixelSize: 11
-                family: Settings.fontFamily
+                family: Theme.fontInsider
             }
             fontSizeMode: Text.Fit
             text: disclaimer.lineTwoText.substring(0, disclaimer.lineTwoCharsShown)

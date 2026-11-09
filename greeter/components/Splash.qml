@@ -30,7 +30,7 @@ Item {
         color: Theme.textPrimary
 
         font {
-            family: Settings.fontFamily
+            family: Theme.fontInsider
             weight: 300
             pixelSize: 64
         }
@@ -80,7 +80,7 @@ Item {
         }
         color: Theme.background
         font {
-            family: Settings.fontFamily
+            family: Theme.fontInsider
             weight: 500
             pixelSize: 34
         }
