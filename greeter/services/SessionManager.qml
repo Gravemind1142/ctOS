@@ -86,7 +86,7 @@ Singleton {
         activeUser = found;
 
         if (saveDefault) {
-            Settings.defaultUsername = found.username;
+            Settings.setDefaultUsername(found.username);
         }
 
         return true;
@@ -102,7 +102,7 @@ Singleton {
         activeDesktop = found;
 
         if (saveDefault) {
-            Settings.defaultDesktopName = found.name;
+            Settings.setDefaultDesktopName(found.name);
         }
 
         return true;
@@ -117,7 +117,8 @@ Singleton {
             return ["uwsm", "stop"];
         }
 
-        const currentDesktop = Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || "";
+        // unset under a bare compositor like cage, env() then returns null
+        const currentDesktop = (Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase();
 
         if (currentDesktop.includes("hyprland")) {
             return ["hyprctl", "dispatch", "exit"];
@@ -134,7 +135,42 @@ Singleton {
         if (!activeDesktop || !activeDesktop.exec) {
             return [];
         }
-        return activeDesktop.exec.trim().split(/\s+/);
+        const command = activeDesktop.exec.trim().split(/\s+/);
+
+        // greetd gives the session the VT as stdout/stderr, so its startup logs flash
+        // on screen. Send them to the journal instead (journalctl -t ctos-session).
+        // NOTE: greetd joins argv with spaces and runs it via `sh -c`, so only plain
+        // words are safe here, no shell syntax or quoting.
+        if (_hasSystemdCat) {
+            return ["systemd-cat", "-t", "ctos-session", "--", ...command];
+        }
+
+        return command;
+    }
+
+    // environment a display manager normally provides, so logind registers a
+    // wayland session and the desktop knows what it is (e.g. GNOME needs this)
+    function getLaunchEnvironment() {
+        const env = ["XDG_SESSION_TYPE=wayland"];
+        const names = (activeDesktop?.desktopNames || "").split(";").filter(n => n.length);
+
+        if (names.length) {
+            env.push(`XDG_CURRENT_DESKTOP=${names.join(":")}`);
+            env.push(`XDG_SESSION_DESKTOP=${names[0].toLowerCase()}`);
+        }
+
+        return env;
+    }
+
+    property bool _hasSystemdCat: false
+
+    Process {
+        id: systemdCatCheck
+        command: ["sh", "-c", "command -v systemd-cat"]
+        running: true
+        onExited: exitCode => {
+            sessionManager._hasSystemdCat = exitCode === 0;
+        }
     }
 
     Process {
@@ -212,7 +248,9 @@ Singleton {
                     return;
                 }
 
-                const [key, value] = line.split("=");
+                // split on the first '=' only, values may contain '=' (e.g. --session=ubuntu)
+                const key = line.slice(0, splitIdx);
+                const value = line.slice(splitIdx + 1);
 
                 switch (key) {
                 case "Name":

@@ -37,8 +37,17 @@ Singleton {
 
     readonly property GeneralDto general: globalAdapter.general
 
-    property string defaultUsername: stateAdapter.session.defaultUsername
-    property string defaultDesktopName: stateAdapter.session.defaultDesktopName
+    readonly property string defaultUsername: stateAdapter.session.defaultUsername
+    readonly property string defaultDesktopName: stateAdapter.session.defaultDesktopName
+
+    // write through to the state adapter so the value is persisted
+    function setDefaultUsername(value: string): void {
+        stateAdapter.session.defaultUsername = value;
+    }
+
+    function setDefaultDesktopName(value: string): void {
+        stateAdapter.session.defaultDesktopName = value;
+    }
 
     readonly property string modeKey: Object.keys(root.modes).find(key => root.modes[key] === root.mode)
 

@@ -40,6 +40,23 @@ Singleton {
             logger.info("Authentication success.");
             handler.success();
         }
+
+        function onLaunched() {
+            logger.info("Session accepted by greetd.");
+        }
+
+        function onError(error) {
+            if (!handler._launching) {
+                // non-fatal, e.g. greetd answers the automatic cancel_session after a
+                // wrong password with "no session under configuration"
+                logger.warn(`Greetd error (ignored): ${error}`);
+                return;
+            }
+
+            // start_session rejected; without this the greeter hangs forever.
+            // critical() quits the greeter, greetd then restarts it at the login screen.
+            logger.critical(`Greetd error while launching: ${error}`);
+        }
     }
 
     Connections {
@@ -85,14 +102,25 @@ Singleton {
         }
     }
 
+    property bool _launching: false
+
     function finish() {
         const launchCommand = SessionManager.getLaunchCommand();
         const exitCommand = SessionManager.getExitCommand();
 
+        if (!launchCommand.length) {
+            logger.critical(`No launch command for desktop '${SessionManager.activeDesktop?.name ?? "<none>"}'`);
+            return;
+        }
+
+        const launchEnv = SessionManager.getLaunchEnvironment();
+
         logger.info(`Launching: ${launchCommand.join(" ")}`);
+        logger.info(`Environment: ${launchEnv.join(" ")}`);
         logger.info(`Exiting Greeter: ${exitCommand.join(" ") || "<none>"}`);
 
-        Greetd.launch(launchCommand);
+        handler._launching = true;
+        Greetd.launch(launchCommand, launchEnv);
 
         if (exitCommand.length) {
             Quickshell.execDetached(exitCommand);

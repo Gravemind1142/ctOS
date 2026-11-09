@@ -149,6 +149,14 @@ Configuration will be installed in `/etc/ctos`. The example file below will be i
 
 ## Recovery
 
+### Logs
+
+Quickshell writes its log to `$XDG_RUNTIME_DIR/quickshell/`, which is cleared on reboot. To keep greeter logs across reboots, redirect its output into the state directory (writable by the greetd user):
+
+```toml
+command = "cage -ds -m last -- sh -c 'CTOS_MODE=kiosk quickshell --path /opt/ctos/greeter.qml > /var/lib/ctos/greeter.log 2>&1'"
+```
+
 ### Session Lock (Lockd)
 
 If the lock-screen becomes unresponsive, you are in a "Deadlock" state. Because Wayland's security model ensures the process obtaining the lock performs the unlock as well, a frozen locker means the session is inaccessible from the GUI. This is dependent on the compositor used as well.
