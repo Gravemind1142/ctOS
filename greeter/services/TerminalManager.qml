@@ -2,6 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 import qs.common
 import qs.greeter.config
@@ -165,11 +166,55 @@ Singleton {
     readonly property string _blumePrefix: "[BLUME_IDP]"
     readonly property string _sentinelPrefix: "[SENTINEL]"
 
+    /*
+        Resolve the system timezone (e.g. America/Los_Angeles) and its ISO country
+        code from zone.tab, printed as "<cc> <tz>". Either part may be empty.
+    */
+    Process {
+        id: regionProcess
+        running: false
+
+        property string _result: ""
+
+        command: ["sh", "-c", `
+            tz="\${TZ#:}"
+            [ -z "$tz" ] && tz="$(readlink /etc/localtime 2>/dev/null | sed -n 's|.*/zoneinfo/||p')"
+            [ -z "$tz" ] && [ -r /etc/timezone ] && tz="$(cat /etc/timezone)"
+            cc="$(awk -v tz="$tz" '$3 == tz { print $1; exit }' /usr/share/zoneinfo/zone.tab 2>/dev/null)"
+            echo "$cc $tz"
+        `]
+
+        stdout: StdioCollector {
+            onStreamFinished: regionProcess._result = text.trim()
+        }
+
+        onExited: terminalManager._showStartup(terminalManager._formatRegion(regionProcess._result))
+    }
+
+    function _formatRegion(raw: string): string {
+        const [cc, tz] = raw.includes(" ") ? raw.split(" ") : ["", raw];
+        const city = (tz || "").split("/").pop().replace(/_/g, "-").toUpperCase();
+
+        if (!city) {
+            return "UNRESOLVED";
+        }
+
+        return cc ? `${cc}-${city}` : city;
+    }
+
     Component.onCompleted: {
+        if (Settings.region) {
+            _showStartup(Settings.region);
+        } else {
+            regionProcess.running = true;
+        }
+    }
+
+    function _showStartup(region: string) {
         const protocol = Settings.isTest ? "CTOS_TEST" : Settings.isGreetd || Settings.isKiosk ? "CTOS_GREETD" : Settings.isLockd ? "CTOS_LOCKD" : "CTOS_DEFAULT";
         displayMessages([
             {
-                message: "REGION_LINK_ESTABLISHED : AU-SOUTH-EAST-2"
+                message: `REGION_LINK_ESTABLISHED : ${region}`
             },
             {
                 message: "LOG_STREAM_CONNECTED // 1B7C5296-469D-4595-AD5D-4E31349CF13F"

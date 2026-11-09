@@ -7,6 +7,7 @@ JsonObject {
     property list<string> exitOverride: []
     property list<string> launchOverride: []
     property string monitor: ""
+    property string region: ""
 
     component ModeSettings: JsonObject {
         /**

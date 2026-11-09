@@ -71,6 +71,7 @@ Singleton {
 
     readonly property string monitor: general.modes[modeKey]?.monitor || general.monitor || Quickshell.screens[0].name
     readonly property string fontFamily: general.fontFamily
+    readonly property string region: general.region
 
     enum AnimationMode {
         None = 0,

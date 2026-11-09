@@ -111,6 +111,9 @@ Configuration will be installed in `/etc/ctos`. The example file below will be i
   /* Primary monitor, greeter only renders on monitor selected */
   "monitor": "DP-3",
 
+  /* Region shown in the terminal, derived from the system timezone if omitted */
+  "region": "US-LOS-ANGELES",
+
   /* The typeface used for the terminal-style interface elements */
   "fontFamily": "JetBrainsMono Nerd Font",
 

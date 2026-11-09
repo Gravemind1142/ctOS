@@ -9,6 +9,10 @@
       "type": "string",
       "description": "The primary monitor with login field."
     },
+    "region": {
+      "type": "string",
+      "description": "Region shown in the terminal's REGION_LINK_ESTABLISHED line. Derived from the system timezone when empty."
+    },
 
     "animations": {
       "$ref": "#/$defs/animationProfile",
