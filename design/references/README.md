@@ -21,6 +21,12 @@ Cutscene frames (2560×1440 for `52896`, 1920×1080 otherwise), then gameplay HU
 | `videoframe_113118.png` | Hacker terminal (`root@[none]`) | Window with a light 2–3px frame and tiny uppercase title strip (`NEW WINDOW`); blue-black background; terminal colours (blue prompt, green `bash*`) |
 | `videoframe_113384.png` | Call-tracing map dashboard | Tiled grid of framed sub-panels; dotted route arcs; muted grey data fills (landmass); round D-pad control; teal network graph |
 
+**Brand assets.** Official marks, used as-is rather than measured from footage.
+
+| File | Shows | Lends us |
+| --- | --- | --- |
+| `ctOS.webp` | The official ctOS logo | The brandmark: a wide white block with a small regular `CT` in its bottom-right corner, then a bold white `OS` a little taller than the block (`Brandmark`) |
+
 **Gameplay HUD.** Lower precedence than the cutscenes (see [DESIGN.md → Precedence](../../DESIGN.md#precedence)): it fills gaps, never overrides.
 
 | Frame | Shows | Lends us |

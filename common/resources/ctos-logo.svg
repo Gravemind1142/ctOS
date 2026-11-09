@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- ctOS logo: a diamond wired to a solid square core. White so QML can recolour it. -->
+  <path d="M24,2 L46,24 L24,46 L2,24 Z M24,2 L24,24.66 M2,24 L16.344,32.316 M46,24 L31.656,32.316 M24,39.972 L24,46" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="butt"/>
+  <path d="M24,24.66 L31.656,32.316 L24,39.972 L16.344,32.316 Z" fill="#ffffff" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="miter"/>
+</svg>

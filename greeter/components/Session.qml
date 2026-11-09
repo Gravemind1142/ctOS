@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.common
+import qs.common.components
 import qs.greeter.components
 import qs.greeter.services
 
@@ -18,11 +19,10 @@ RowLayout {
                 height: 56 * Units.vh
                 width: height
 
-                Image {
+                BlumeLogo {
                     anchors.fill: parent
                     anchors.margins: 2 * Units.vh
-                    fillMode: Image.PreserveAspectFit
-                    source: "../resources/blume-logo.svg"
+                    color: Theme.labelText
                 }
             }
 
