@@ -562,6 +562,10 @@ Reuse these before writing new ones. Shared ones go in `common/components`.
 | `SignalIcon` | bar | The phone's network glyph; dims and takes an `error` status dot without a link |
 | `SystemLabel` | bar | The ctOS logo block and the brandmark, at the left of the bar |
 | `Workspace` / `Workspaces` | bar | Workspace cells: lead app icon plus a pip per extra window; the active one gets brackets (and a crosshair when empty). Click to switch, with the control states on hover and press |
+| `TintedIcon` | bar | An app icon recoloured to one tone (Qt Quick Effects), keeping its shading; `ready` false until it loads so a fallback can stand in |
+| `Tray` | bar | One workspace-sized cell after the workspaces: the background-app count as a two-digit readout (`warning` while one needs attention); click to open the `TrayMenu` |
+| `TrayItem` | bar | An app in the tray grid: its icon tinted, `warning` while it needs attention, control states while `targeted`; scroll goes to the app |
+| `TrayMenu` | bar | Popup tiled under the tray: the apps as an icon grid (left click activates, middle click secondary, right click drills in), then an app's menu redrawn as list rows with a BACK row, separators as rules, `[X]`/`(•)` toggles, submenus drilled into the same way |
 | `Surface` | greeter | A framed panel with an animated side bar |
 | `IdentityCard` | greeter | The profiler pattern: name and labelled facts |
 | `FieldGroup` / `PasswordField` | greeter | Labelled input with a block cursor and masked characters |

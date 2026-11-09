@@ -6,7 +6,7 @@ import qs.bar.services
 Row {
     id: root
 
-    property int count: 5
+    property int count: 4
     property int selectedIndex: WorkspaceManager.selectedWorkspaceId - 1  // workspace 1-based index
 
     height: parent.height

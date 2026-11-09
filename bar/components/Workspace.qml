@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Effects
 import Quickshell
 
 import qs.common
@@ -66,31 +65,18 @@ Item {
         }
     }
 
-    Image {
+    TintedIcon {
         id: icon
         anchors.centerIn: parent
-        width: Theme.fontSizeMd
-        height: Theme.fontSizeMd
-        sourceSize: Qt.size(width, height)
         source: root._iconSource
-        visible: false
-        smooth: true
-        mipmap: true
-    }
-
-    // app icons are recoloured to the cell's tone, keeping their shading
-    MultiEffect {
-        anchors.fill: icon
-        source: icon
-        visible: root.occupied && icon.status === Image.Ready
-        colorization: 1
-        colorizationColor: root.ink
+        color: root.ink
+        visible: root.occupied
     }
 
     // no icon found: the app id's initial, in the insider voice
     Text {
         anchors.centerIn: parent
-        visible: root.occupied && icon.status !== Image.Ready
+        visible: root.occupied && !icon.ready
         text: (root.windows[0] ?? "?").replace(/^.*\./, "").charAt(0).toUpperCase() || "?"
         color: root.ink
         font {

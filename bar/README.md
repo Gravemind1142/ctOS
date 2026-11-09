@@ -5,7 +5,7 @@ To use the bar, you must have the following core components installed on your sy
 ### Required
 
 - **[Quickshell](https://quickshell.org):** The engine used to render the QML interface and provide the necessary Wayland desktop shell integrations.
-- **Qt Quick Effects:** Recolours app icons in the workspace cells. Bundled with `qt6-declarative` on Arch; on Debian/Ubuntu install `qml6-module-qtquick-effects`.
+- **Qt Quick Effects:** Recolours app icons in the workspace and tray cells. Bundled with `qt6-declarative` on Arch; on Debian/Ubuntu install `qml6-module-qtquick-effects`.
 
 ## Getting Started
 
@@ -39,7 +39,10 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
   },
   "modules": {
     /* Every module can be hidden with "enabled": false */
-    "workspaces": { "enabled": true, "count": 5 }, // 1-10 workspace boxes
+    "workspaces": { "enabled": true, "count": 4 }, // 1-10 workspace boxes
+    /* Background-app count after the workspaces, hidden while empty. Click it for the apps as an icon grid:
+       left click activates an app, right click opens its menu, middle click is its secondary action */
+    "tray": { "enabled": true },
     /* Seconds between samples. The symbol turns to a warning "!!" while a process holds more than
        "threshold" percent of one core for two samples in a row (CPU), or of physical memory (MEM).
        Click either meter for its heaviest processes */

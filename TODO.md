@@ -54,7 +54,8 @@ See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated b
 - [x] **Bar: CPU/MEM**: `!!` in warning while a process is over the threshold, click for the heaviest processes
 - [x] **Bar: network**: click the segment for the network menu; `SUPER+N` (or the menu's ADVANCED) opens nmtui
 - [x] **Network popup**: themed Quickshell menu (current link readout, wifi list with signal and security, connect with key entry, forget, Wi-Fi on/off)
-- [ ] **Bar**: finish the WIP modules: tray, media, workspace click-to-switch
+- [x] **Bar: tray**: after the workspaces (now 4 by default), one cell with the app count, click for an icon grid of the apps and their themed menus
+- [ ] **Bar**: finish the WIP modules: media
 - [ ] **Clipboard history**: cliphist + a launcher picker
 - [ ] **Screenshot tool**: binds done; `grim slurp wl-clipboard` need installing. Optionally an editor such as satty/swappy
 - [ ] **Wallpaper**: hyprpaper set up. Optionally, switch wallpaper per workspace or rotate them

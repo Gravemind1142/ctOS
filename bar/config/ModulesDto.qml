@@ -4,7 +4,11 @@ import Quickshell.Io
 JsonObject {
     component WorkspacesDto: JsonObject {
         property bool enabled: true
-        property int count: 5
+        property int count: 4
+    }
+
+    component TrayDto: JsonObject {
+        property bool enabled: true
     }
 
     component PollingDto: JsonObject {
@@ -56,6 +60,7 @@ JsonObject {
     }
 
     property WorkspacesDto workspaces: WorkspacesDto {}
+    property TrayDto tray: TrayDto {}
     property CpuDto cpu: CpuDto {}
     property MemoryDto memory: MemoryDto {
         interval: 1

@@ -26,7 +26,7 @@ Singleton {
 
     readonly property ShellScreen screen: Quickshell.screens.find(s => s.name === general.monitor) ?? Quickshell.screens[0]
 
-    readonly property int workspaceCount: Utils.clamp(modules.workspaces.count || 5, 1, 10)
+    readonly property int workspaceCount: Utils.clamp(modules.workspaces.count || 4, 1, 10)
 
     // seconds; guard against 0/negative values polling in a tight loop
     function pollInterval(value: real, fallback: real): real {

@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Services.Pipewire
+import Quickshell.Services.SystemTray
 import QtQuick
 import QtQuick.Layouts
 
@@ -52,6 +53,14 @@ PanelWindow {
             Workspaces {
                 visible: Settings.modules.workspaces.enabled
                 count: Settings.workspaceCount
+            }
+
+            Tray {
+                id: tray
+                visible: Settings.modules.tray.enabled && SystemTray.items.values.length > 0
+            }
+            Divider {
+                visible: tray.visible
             }
 
             CpuMeter {
