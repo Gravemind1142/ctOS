@@ -44,7 +44,8 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
     "memory": { "enabled": true, "interval": 1 },
     /* Hidden automatically on machines without a battery */
     "battery": { "enabled": true },
-    "network": { "enabled": true },
+    /* Command run when the network segment is clicked */
+    "network": { "enabled": true, "command": "kitty --class ctos-network -e nmtui" },
     /* Label shown instead of $USER */
     "user": { "enabled": true, "label": "" },
     /* Label after the clock, empty shows the system timezone (e.g. "PST") */

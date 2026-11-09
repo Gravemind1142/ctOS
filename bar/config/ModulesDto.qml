@@ -15,6 +15,8 @@ JsonObject {
 
     component NetworkDto: JsonObject {
         property bool enabled: true
+        // run when the network segment is clicked
+        property string command: "kitty --class ctos-network -e nmtui"
     }
 
     component BatteryDto: JsonObject {

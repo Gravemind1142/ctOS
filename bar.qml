@@ -200,6 +200,10 @@ PanelWindow {
                     }
                 }
 
+                TapHandler {
+                    onTapped: Quickshell.execDetached(["sh", "-c", Settings.modules.network.command])
+                }
+
                 text: {
                     let ssid = "";
                     let hasWifi = false;

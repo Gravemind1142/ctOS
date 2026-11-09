@@ -325,6 +325,19 @@ function generate_hyprland_snippet() {
     echo "exec-once = ${prefix}$polkit_agent"
   fi
 
+  if command -v nmtui >/dev/null && command -v kitty >/dev/null; then
+    echo
+    echo "# network manager, opened by clicking the bar's network segment or SUPER+N"
+    echo "bind = SUPER, N, exec, kitty --class ctos-network -e nmtui"
+    echo "windowrule {"
+    echo "    name = ctos-network"
+    echo "    match:class = ^(ctos-network)\$"
+    echo "    float = true"
+    echo "    size = 900 600"
+    echo "    center = true"
+    echo "}"
+  fi
+
   if ! command -v hyprland-dialog >/dev/null; then
     echo
     echo "# hyprland-guiutils is not installed; hide the missing-dependency warning"
