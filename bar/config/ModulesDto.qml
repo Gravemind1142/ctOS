@@ -17,6 +17,10 @@ JsonObject {
         property bool enabled: true
     }
 
+    component BatteryDto: JsonObject {
+        property bool enabled: true
+    }
+
     component UserDto: JsonObject {
         property bool enabled: true
         // empty shows $USER
@@ -34,6 +38,7 @@ JsonObject {
     property PollingDto memory: PollingDto {
         interval: 1
     }
+    property BatteryDto battery: BatteryDto {}
     property NetworkDto network: NetworkDto {}
     property UserDto user: UserDto {}
     property StatusDto status: StatusDto {}

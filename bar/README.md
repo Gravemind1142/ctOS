@@ -42,6 +42,8 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
     "workspaces": { "enabled": true, "count": 5 }, // 1-10 workspace boxes
     "cpu": { "enabled": true, "interval": 2 }, // seconds between samples
     "memory": { "enabled": true, "interval": 1 },
+    /* Hidden automatically on machines without a battery */
+    "battery": { "enabled": true },
     "network": { "enabled": true },
     /* Label shown instead of $USER */
     "user": { "enabled": true, "label": "" },
