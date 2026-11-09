@@ -1,6 +1,5 @@
 import Quickshell
 import Quickshell.Io
-import Quickshell.Networking
 import Quickshell.Services.Pipewire
 import QtQuick
 import QtQuick.Layouts
@@ -168,58 +167,9 @@ PanelWindow {
                 visible: netSegment.visible
             }
 
-            SimpleSegment {
+            NetworkSegment {
                 id: netSegment
-
-                readonly property bool linked: text !== "OFFLINE"
-
                 visible: Settings.modules.network.enabled
-                interactive: true
-                live: linked
-                onClicked: Quickshell.execDetached(["sh", "-c", Settings.modules.network.command])
-
-                icon: SignalIcon {
-                    anchors.fill: parent
-                    linked: netSegment.linked
-                    color: netSegment.inkColor
-                }
-
-                text: {
-                    let ssid = "";
-                    let hasWifi = false;
-                    let hasWired = false;
-
-                    for (let i = 0; i < Networking.devices.values.length; i++) {
-                        const device = Networking.devices.values[i];
-
-                        if (device.type === DeviceType.None && device.connected) {
-                            hasWired = true;
-                            break;
-                        }
-
-                        if (device.type === DeviceType.Wifi && device.connected) {
-                            hasWifi = true;
-                            const connectedNetwork = device.networks.values.find(n => n.connected);
-
-                            const wifiRegex = /([-_ ]?[25](?:\.4)?g)/gi;
-                            ssid = (connectedNetwork?.name || "").toUpperCase().replace(wifiRegex, "");
-
-                            const delimiterRegex = /[-_ ]/g;
-                            ssid = ssid.replace(delimiterRegex, "").padEnd(7, "_");
-
-                            ssid = ssid.length > 7 ? ssid.slice(-7) : ssid;
-                        }
-                    }
-
-                    if (hasWired)
-                        return "-WIRED-";
-
-                    if (hasWifi && ssid !== "") {
-                        return ssid;
-                    }
-
-                    return "OFFLINE";
-                }
             }
 
             Divider {

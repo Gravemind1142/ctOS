@@ -2,19 +2,16 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 
-import Quickshell
 import Quickshell.Services.UPower
 
 import qs.common
+import qs.bar.components
 
 // Power menu dropped from the battery segment: a battery readout (profiler pattern) and the
-// power-profiles-daemon profile as a list, the active one an inverted block. Tiles onto the
-// bar's bottom edge, under the segment that opened it. Click outside or Escape to close.
-PopupWindow {
+// power-profiles-daemon profile as a list, the active one an inverted block.
+BarPopup {
     id: root
 
-    // the segment it hangs from
-    required property Item segment
     property UPowerDevice device: UPower.displayDevice
     // below this the level reads as a warning while draining
     property int lowLevel: 20
@@ -24,15 +21,8 @@ PopupWindow {
     readonly property bool charging: deviceState === UPowerDeviceState.Charging || deviceState === UPowerDeviceState.PendingCharge
     readonly property bool full: deviceState === UPowerDeviceState.FullyCharged
 
-    // when it last closed: the click outside that dismisses it can land on the segment too
-    property real closedAt: 0
-
-    function toggle(): void {
-        if (!visible && Date.now() - closedAt < Theme.durationMedium) {
-            return;
-        }
-        visible = !visible;
-    }
+    title: "POWER"
+    status: stateLabel()
 
     // seconds → "hh:mm", padded so the readout doesn't jitter
     function duration(seconds: real): string {
@@ -72,73 +62,6 @@ PopupWindow {
         }
     }
 
-    anchor {
-        item: segment
-        // overlap the bar's border so the two frames share one rule
-        rect.y: segment.height - Theme.strokeHairline
-        edges: Edges.Top | Edges.Left
-        gravity: Edges.Bottom | Edges.Right
-    }
-
-    implicitWidth: Theme.popupWidth
-    implicitHeight: panel.height
-    color: "transparent"
-    grabFocus: true
-
-    onVisibleChanged: {
-        if (visible) {
-            reveal.restart();
-        } else {
-            closedAt = Date.now();
-        }
-    }
-
-    component Label: Text {
-        color: Theme.textPrimaryDim
-        font {
-            family: Theme.fontInsider
-            pixelSize: Theme.fontSizeXs
-            weight: Theme.fontWeightBold
-            letterSpacing: Theme.trackingLabel
-        }
-    }
-
-    component Value: Text {
-        color: Theme.textPrimary
-        font {
-            family: Theme.fontInsider
-            pixelSize: Theme.fontSizeSm
-            weight: Theme.fontWeightMedium
-        }
-    }
-
-    component Rule: Rectangle {
-        Layout.fillWidth: true
-        Layout.preferredHeight: Theme.strokeHairline
-        color: Theme.frameSubtle
-    }
-
-    // label on the left, value on the right
-    component Fact: RowLayout {
-        property alias label: label.text
-        property alias value: value.text
-
-        Layout.fillWidth: true
-        spacing: Theme.spaceSm
-
-        Label {
-            id: label
-        }
-
-        Item {
-            Layout.fillWidth: true
-        }
-
-        Value {
-            id: value
-        }
-    }
-
     // a list row: name and a micro label under it; selected is an inverted block
     component ProfileRow: Rectangle {
         id: row
@@ -166,21 +89,14 @@ PopupWindow {
             }
             spacing: Theme.space2xs
 
-            Value {
+            PopupValue {
                 text: row.name
                 color: row.ink
             }
 
-            Text {
-                Layout.fillWidth: true
-                elide: Text.ElideRight
+            PopupMicroLabel {
                 text: row.detail
                 color: row.selected ? Theme.labelText : Theme.textPrimaryDimmer
-                font {
-                    family: Theme.fontInsider
-                    pixelSize: Theme.fontSize2xs
-                    letterSpacing: Theme.trackingLabel
-                }
             }
         }
 
@@ -194,164 +110,91 @@ PopupWindow {
         }
     }
 
-    // keeps the drop clipped to the popup while it slides in
-    Item {
-        anchors.fill: parent
-        clip: true
-        focus: true
+    // battery readout
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.margins: Theme.spaceMd
+        spacing: Theme.spaceXs
 
-        Keys.onEscapePressed: root.visible = false
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Theme.spaceSm
 
-        Rectangle {
-            id: panel
-
-            width: parent.width
-            height: body.implicitHeight + 2 * Theme.strokeHairline
-            color: Theme.surface
-            border {
-                width: Theme.strokeHairline
-                color: Theme.frame
+            Text {
+                text: root.level.toString().padStart(3, "0") + "%"
+                color: root.level < root.lowLevel && !root.charging && !root.full ? Theme.warning : Theme.textPrimary
+                font {
+                    family: Theme.fontInsider
+                    pixelSize: Theme.fontSizeXl
+                    weight: Theme.fontWeightBold
+                }
             }
 
-            NumberAnimation {
-                id: reveal
-                target: panel
-                property: "y"
-                from: -panel.height
-                to: 0
-                duration: Theme.durationShort
-                easing.type: Theme.easeEnter
+            Item {
+                Layout.fillWidth: true
             }
 
-            ColumnLayout {
-                id: body
+            PopupLabel {
+                Layout.alignment: Qt.AlignBottom
+                Layout.bottomMargin: Theme.space2xs
+                text: root.device?.model ? root.device.model.toUpperCase() : "BATTERY"
+                elide: Text.ElideLeft
+                Layout.maximumWidth: Theme.popupWidth / 2
+            }
+        }
 
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                    margins: Theme.strokeHairline
-                }
-                spacing: 0
+        PopupRule {}
 
-                // label block on the frame's top edge
-                Rectangle {
-                    Layout.fillWidth: true
-                    implicitHeight: header.implicitHeight + 2 * Theme.spaceXs
-                    color: Theme.labelFill
+        PopupFact {
+            label: root.charging ? "TIME TO FULL" : "TIME TO EMPTY"
+            value: root.duration(root.charging ? root.device?.timeToFull ?? 0 : root.device?.timeToEmpty ?? 0)
+        }
 
-                    RowLayout {
-                        id: header
-                        anchors {
-                            fill: parent
-                            leftMargin: Theme.controlPadding
-                            rightMargin: Theme.controlPadding
-                        }
+        PopupFact {
+            label: "DRAW"
+            value: Math.abs(root.device?.changeRate ?? 0).toFixed(1).padStart(4, "0") + " W"
+        }
 
-                        Label {
-                            text: "POWER"
-                            color: Theme.labelText
-                        }
+        PopupFact {
+            visible: !!root.device?.healthSupported
+            label: "HEALTH"
+            value: Math.round(root.device?.healthPercentage ?? 0).toString().padStart(3, "0") + "%"
+        }
+    }
 
-                        Item {
-                            Layout.fillWidth: true
-                        }
+    PopupRule {}
 
-                        Label {
-                            text: root.stateLabel()
-                            color: Theme.labelText
-                        }
-                    }
-                }
+    // power profile
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.margins: Theme.spaceMd
+        spacing: Theme.spaceXs
 
-                // battery readout
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    Layout.margins: Theme.spaceMd
-                    spacing: Theme.spaceXs
+        PopupLabel {
+            text: "PROFILE"
+        }
 
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: Theme.spaceSm
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: 0
 
-                        Text {
-                            text: root.level.toString().padStart(3, "0") + "%"
-                            color: root.level < root.lowLevel && !root.charging && !root.full ? Theme.warning : Theme.textPrimary
-                            font {
-                                family: Theme.fontInsider
-                                pixelSize: Theme.fontSizeXl
-                                weight: Theme.fontWeightBold
-                            }
-                        }
+            ProfileRow {
+                profile: PowerProfile.PowerSaver
+                name: "Saver"
+                detail: "EXTENDED RUNTIME"
+            }
 
-                        Item {
-                            Layout.fillWidth: true
-                        }
+            ProfileRow {
+                profile: PowerProfile.Balanced
+                name: "Balanced"
+                detail: "DEFAULT"
+            }
 
-                        Label {
-                            Layout.alignment: Qt.AlignBottom
-                            Layout.bottomMargin: Theme.space2xs
-                            text: root.device?.model ? root.device.model.toUpperCase() : "BATTERY"
-                            elide: Text.ElideLeft
-                            Layout.maximumWidth: Theme.popupWidth / 2
-                        }
-                    }
-
-                    Rule {}
-
-                    Fact {
-                        label: root.charging ? "TIME TO FULL" : "TIME TO EMPTY"
-                        value: root.duration(root.charging ? root.device?.timeToFull ?? 0 : root.device?.timeToEmpty ?? 0)
-                    }
-
-                    Fact {
-                        label: "DRAW"
-                        value: Math.abs(root.device?.changeRate ?? 0).toFixed(1).padStart(4, "0") + " W"
-                    }
-
-                    Fact {
-                        visible: !!root.device?.healthSupported
-                        label: "HEALTH"
-                        value: Math.round(root.device?.healthPercentage ?? 0).toString().padStart(3, "0") + "%"
-                    }
-                }
-
-                Rule {}
-
-                // power profile
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    Layout.margins: Theme.spaceMd
-                    spacing: Theme.spaceXs
-
-                    Label {
-                        text: "PROFILE"
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 0
-
-                        ProfileRow {
-                            profile: PowerProfile.PowerSaver
-                            name: "Saver"
-                            detail: "EXTENDED RUNTIME"
-                        }
-
-                        ProfileRow {
-                            profile: PowerProfile.Balanced
-                            name: "Balanced"
-                            detail: "DEFAULT"
-                        }
-
-                        ProfileRow {
-                            visible: PowerProfiles.hasPerformanceProfile
-                            profile: PowerProfile.Performance
-                            name: "Performance"
-                            detail: root.degradation() || "MAXIMUM OUTPUT"
-                        }
-                    }
-                }
+            ProfileRow {
+                visible: PowerProfiles.hasPerformanceProfile
+                profile: PowerProfile.Performance
+                name: "Performance"
+                detail: root.degradation() || "MAXIMUM OUTPUT"
             }
         }
     }

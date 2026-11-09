@@ -44,7 +44,7 @@ The bar reads `~/.config/ctos/bar.config.json`. It is created with the defaults 
     "memory": { "enabled": true, "interval": 1 },
     /* Hidden automatically on machines without a battery. Click it for battery details and the power profile (needs power-profiles-daemon) */
     "battery": { "enabled": true },
-    /* Command run when the network segment is clicked */
+    /* Click the segment for the network menu. Command run by the menu's ADVANCED action (and for enterprise networks) */
     "network": { "enabled": true, "command": "kitty --class ctos-network -e nmtui" },
     /* Label shown instead of $USER */
     "user": { "enabled": true, "label": "" },

@@ -49,8 +49,8 @@ See [`DESIGN.md`](DESIGN.md). These come first: existing literals are migrated b
 - [ ] **OSD**: on-screen popups when volume or brightness keys are pressed
 - [ ] **Power menu**: lock / logout / suspend / reboot / shutdown (replaces the bare `SUPER+SHIFT+M` exit)
 - [x] **Bar: battery**: BAT meter (`++` charging, `--` discharging), click for the power menu (battery readout, power profile)
-- [x] **Bar: network**: click the segment (or `SUPER+N`) to open nmtui
-- [ ] **Network popup**: themed Quickshell menu (wifi list, signal, connect) to replace nmtui
+- [x] **Bar: network**: click the segment for the network menu; `SUPER+N` (or the menu's ADVANCED) opens nmtui
+- [x] **Network popup**: themed Quickshell menu (current link readout, wifi list with signal and security, connect with key entry, forget, Wi-Fi on/off)
 - [ ] **Bar**: finish the WIP modules: tray, media, workspace click-to-switch
 - [ ] **Clipboard history**: cliphist + a launcher picker
 - [ ] **Screenshot tool**: binds done; `grim slurp wl-clipboard` need installing. Optionally an editor such as satty/swappy

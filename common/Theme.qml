@@ -159,6 +159,8 @@ Singleton {
     readonly property int barMeterWidth: 90
     // Width of a menu dropped from a bar segment
     readonly property int popupWidth: 240
+    // Width of a bar menu that lists names (network list)
+    readonly property int popupWidthWide: 300
 
     // SECTION Shape
 
@@ -192,6 +194,8 @@ Singleton {
     readonly property int controlPadding: spaceMd
     // Checkbox and radio box
     readonly property int indicatorSize: 14
+    // Round icon badge at the start of a list row (network list)
+    readonly property int badgeSize: 24
     // Slider and progress track
     readonly property int trackThickness: 2
     // Slider handle (square)

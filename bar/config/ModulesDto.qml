@@ -15,7 +15,7 @@ JsonObject {
 
     component NetworkDto: JsonObject {
         property bool enabled: true
-        // run when the network segment is clicked
+        // run by the network menu's ADVANCED action, and for enterprise (EAP) networks
         property string command: "kitty --class ctos-network -e nmtui"
     }
 
