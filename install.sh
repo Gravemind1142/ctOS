@@ -483,6 +483,16 @@ function setup_hyprbars() {
     return 0
   fi
 
+  # hyprpm compiles the plugin; check its build tools before offering it
+  local tool missing=()
+  for tool in cmake cpio pkg-config git g++ gcc; do
+    command -v "$tool" >/dev/null || missing+=("$tool")
+  done
+  if ((${#missing[@]})); then
+    echo "[ITEM]     n/a: ctOS title strips (hyprpm needs: ${missing[*]})"
+    return 0
+  fi
+
   echo
   echo "  Title strips: a thin ctOS title strip on every window, drawn by the"
   echo "  hyprbars plugin. Builds the plugin with hyprpm (asks for sudo, needs"
