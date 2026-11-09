@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/c7bd78d0-3fd7-457d-acd8-bf10e192736e
 
 ## Bar (WIP)
 
-A stylized menu-bar. Undergoing a rewrite to quickshell.
+A stylized menu-bar.
 
 ### Features
 
