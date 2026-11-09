@@ -70,7 +70,6 @@ generate_greeter_config() {
   cat <<EOF
 {
   "general": {
-    "fontFamily": "JetBrainsMono Nerd Font",
     "animations": "all",
     "monitor": "$monitor",
     "exitOverride": [],
@@ -429,6 +428,84 @@ function setup_hyprland_session() {
   fi
 }
 
+# append 'source = <file>' to hyprland.conf once, after a backup
+function add_hypr_source() {
+  local file="$1"
+  local hypr_conf="$HYPR_DIR/hyprland.conf"
+
+  local backup="$hypr_conf.bak.$(date +%Y%m%d%H%M%S)"
+  cp "$hypr_conf" "$backup"
+  echo "[ITEM]  backup: $backup"
+
+  printf 'source = %s\n' "$file" >>"$hypr_conf"
+  echo "[ITEM] updated: $hypr_conf (sources $file)"
+}
+
+function setup_hyprland_look() {
+  local look="$INSTALL_DIR/extras/.config/hypr/ctos-look.conf"
+  local hypr_conf="$HYPR_DIR/hyprland.conf"
+
+  if ! command -v Hyprland >/dev/null || [[ ! -f "$hypr_conf" ]]; then
+    echo "[ITEM]     n/a: ctOS window look (Hyprland or $hypr_conf missing)"
+    return 0
+  fi
+
+  if grep -qF "$look" "$hypr_conf"; then
+    echo "[ITEM]   found: $look (sourced, skipping)"
+    return 0
+  fi
+
+  echo
+  echo "  Window look: square 2px frames, narrow gaps, no shadows or blur, ctOS"
+  echo "  animation curves. Overrides those settings in hyprland.conf, a backup is"
+  echo "  made first."
+  echo
+
+  if ! ask "Apply the ctOS window look?"; then
+    echo "[ITEM] skipped: $look"
+    return 0
+  fi
+
+  add_hypr_source "$look"
+}
+
+function setup_hyprbars() {
+  local bars="$INSTALL_DIR/extras/.config/hypr/ctos-hyprbars.conf"
+  local hypr_conf="$HYPR_DIR/hyprland.conf"
+
+  if ! command -v hyprpm >/dev/null || [[ ! -f "$hypr_conf" ]]; then
+    echo "[ITEM]     n/a: ctOS title strips (hyprpm or $hypr_conf missing)"
+    return 0
+  fi
+
+  if grep -qF "$bars" "$hypr_conf"; then
+    echo "[ITEM]   found: $bars (sourced, skipping)"
+    return 0
+  fi
+
+  echo
+  echo "  Title strips: a thin ctOS title strip on every window, drawn by the"
+  echo "  hyprbars plugin. Builds the plugin with hyprpm (asks for sudo, needs"
+  echo "  build tools). Plugins can break on Hyprland updates: if that happens,"
+  echo "  remove the 'source' line for ctos-hyprbars.conf from hyprland.conf."
+  echo
+
+  if ! ask "Install hyprbars title strips?"; then
+    echo "[ITEM] skipped: $bars"
+    return 0
+  fi
+
+  if ! hyprpm update ||
+    ! { hyprpm list | grep -q hyprbars || hyprpm add https://github.com/hyprwm/hyprland-plugins; } ||
+    ! hyprpm enable hyprbars; then
+    echo "[ITEM]  failed: hyprbars (see hyprpm output above, skipping)"
+    return 0
+  fi
+  echo "[ITEM] enabled: hyprbars"
+
+  add_hypr_source "$bars"
+}
+
 function install_terminal_extras() {
   local extras="$INSTALL_DIR/extras/.config"
   local -a links=(
@@ -493,6 +570,8 @@ if [[ "$EUID" -ne 0 ]]; then
   echo
   echo "[OPTIONAL]"
   setup_hyprland_session
+  setup_hyprland_look
+  setup_hyprbars
   install_terminal_extras
 else
   echo
